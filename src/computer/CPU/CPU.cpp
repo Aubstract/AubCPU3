@@ -99,6 +99,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // No decode
             // No write back
             // Don't update flags
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case JIN:
@@ -109,8 +111,14 @@ void CPU::DecodeAndExecute(uint16_t instr)
             {
                 reg_file.Write(PROG_CNTR_ADDR, args.at(0));
             }
+            else
+            {
+                // Increment PC
+                reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
+            }
             // No write back apart from updating the PC during execute phase
             // Don't update flags
+            // Don't increment PC again
             break;
 
         case CMP:
@@ -123,6 +131,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // No write back
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case ADD:
@@ -136,6 +146,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             reg_file.Write(args.at(0), alu_out);
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case SUB:
@@ -149,6 +161,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             reg_file.Write(args.at(0), alu_out);
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case AND:
@@ -162,6 +176,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             reg_file.Write(args.at(0), alu_out);
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case ORR:
@@ -175,6 +191,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             reg_file.Write(args.at(0), alu_out);
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case XOR:
@@ -188,6 +206,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             reg_file.Write(args.at(0), alu_out);
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case LSH:
@@ -200,6 +220,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             reg_file.Write(args.at(0), alu_out);
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case RSH:
@@ -212,6 +234,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             reg_file.Write(args.at(0), alu_out);
             // Update flags
             reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case INC:
@@ -223,6 +247,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             reg_file.Write(args.at(0), alu_out);
             // Don't update flags
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case DEC:
@@ -234,6 +260,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             reg_file.Write(args.at(0), alu_out);
             // Don't update flags
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case LOD:
@@ -243,6 +271,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             reg_file.Write(args.at(0), data_mem.Read(args.at(1)));
             // Don't update flags
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case LDI:
@@ -252,6 +282,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             reg_file.Write(args.at(0), args.at(1));
             // Don't update flags
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case STO:
@@ -261,6 +293,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             data_mem.Write(args.at(1), reg_file.Read(args.at(0)));
             // Don't update flags
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case CPR:
@@ -270,6 +304,8 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             reg_file.Write(args.at(0), reg_file.Read(args.at(1)));
             // Don't update flags
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         default:
@@ -330,16 +366,20 @@ void CPU::LoadProgram(std::ifstream& input_file)
     ResetMemory();
     uint8_t byte1, byte2;
 
+    // char* byte1_ptr = &byte1;
+    // char* byte2_ptr = &byte2;
+
     // Read two bytes at a time until read address is 256
     while (input_file.read(reinterpret_cast<char*>(&byte1), 1) && input_file.read(reinterpret_cast<char*>(&byte2), 1))
     {
         // Construct instruction word (little endian)
         uint16_t instr_word = (uint16_t(byte2) << 8) | byte1;
+        size_t write_addr = (int(input_file.tellg()) / 2) - 1;
 
-        prog_mem.Write(int(input_file.tellg()) - 2, instr_word);
+        prog_mem.Write(write_addr, instr_word);
 
         // Check if read address is greater than the size of the CPU's program memory
-        if (input_file.tellg() >= PROG_MEM_SIZE)
+        if (input_file.tellg() >= (PROG_MEM_SIZE * 2))
         {
             break;
         }

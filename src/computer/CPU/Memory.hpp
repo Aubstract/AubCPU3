@@ -15,7 +15,7 @@ class Memory
 protected:
     std::array<Register<T>, N> registers;
 public:
-    virtual uint8_t Read(size_t addr) const
+    virtual T Read(size_t addr) const
     {
         return registers.at(addr).read();
     }

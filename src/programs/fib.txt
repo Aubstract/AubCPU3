@@ -1,22 +1,27 @@
 // Created by Aubrey on 6/18/2024
 // Fibonacci Program for SoftCPU2
 
+test_var: 5
+test_var_2: . test_var + 1 -
+
+carry_out_flag: 4
+
 start:
-    ldi x5, 0
-    ldi x6, 1
+    ldi x5, 0 // 93
+    ldi x6, 1 // 365
     // print first two terms
 
 main_loop:
-    cpr x7, x5
-    add x7, x6
-    cpr x5, x6
-    cpr x6, x7
+    cpr x7, x5 // 1407
+    add x7, x6 // 1651
+    cpr x5, x6 // 1631
+    cpr x6, x7 // 1903
 
-    ldi x8, carry_out_flag
-    and flags, x8
-    jin halt
+    ldi x8, carry_out_flag // 1165
+    and flag_reg, x8 // 2261
+    jin halt // 2561
     // print new term stored in x6
-    ldi pc, main_loop
+    ldi pc_reg, (main_loop 1 -) // 509
 
 halt:
-    hlt
+    hlt // 0
