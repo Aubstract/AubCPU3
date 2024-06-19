@@ -1,0 +1,22 @@
+// Created by Aubrey on 6/18/2024
+// Fibonacci Program for SoftCPU2
+
+start:
+    ldi x5, 0
+    ldi x6, 1
+    // print first two terms
+
+main_loop:
+    cpr x7, x5
+    add x7, x6
+    cpr x5, x6
+    cpr x6, x7
+
+    ldi x8, carry_out_flag
+    and flags, x8
+    jin halt
+    // print new term stored in x6
+    ldi pc, main_loop
+
+halt:
+    hlt

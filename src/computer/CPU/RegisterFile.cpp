@@ -14,6 +14,8 @@ void RegisterFile::Write(size_t addr, uint8_t data)
 
 void RegisterFile::UpdateFlags(uint16_t alu_out, uint8_t alu_in_a, uint8_t alu_in_b)
 {
+    this->ClearFlags();
+
     if (alu_out == 0)
     {
         SetFlag(zero);

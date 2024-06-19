@@ -8,7 +8,7 @@
 enum Opcode
 {
     HLT,
-    JMP,
+    JIN,
     CMP,
     ADD,
     SUB,

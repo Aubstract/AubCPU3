@@ -49,7 +49,7 @@ uint8_t ALU::Dec(uint8_t a)
     return a - 1;
 }
 
-uint16_t ALU::Operate(Opcode op, uint8_t a, uint8_t b = 0)
+uint16_t ALU::Operate(Opcode op, uint8_t a, uint8_t b)
 {
     switch (op)
     {
