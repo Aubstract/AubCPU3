@@ -1,13 +1,13 @@
-//#define NDEBUG
-
 #include "CPU/CPU.hpp"
 #include <cassert>
-#include <fstream>
+#include <iostream>
 #include <string>
 
 int main()
 {
-    CPU cpu;
+    std::ofstream log("../src/computer/log.txt");
+    assert(log);
+    CPU cpu(log, std::cout, std::cin);
     std::string path;
 
     std::cout << "Enter the file path to the binary file: " << std::flush;
@@ -17,7 +17,7 @@ int main()
     assert(fib_bin);
 
     cpu.LoadProgram(fib_bin);
-    cpu.Run(-1);
+    cpu.Run(4000);
 
     return 0;
 }

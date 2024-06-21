@@ -7,7 +7,8 @@
 constexpr size_t CONSOLE_BASE_ADDR = 0;
 
 
-IOManager::IOManager() : console(CONSOLE_BASE_ADDR, std::cout, std::cin)
+IOManager::IOManager(std::ostream& console_out, std::istream& console_in)
+                     : console(CONSOLE_BASE_ADDR, console_out, console_in)
 {}
 
 uint8_t IOManager::Read(size_t addr)

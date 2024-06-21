@@ -107,23 +107,24 @@ print_uint:
 
     // Second print
     cpr arg_b_reg, x6                   // arg_b_reg = 10
-    ldi x8, (return_div_10 1 -)         // load the return addr
+    ldi x8, (return_div_10 1 -)         // load return addr
     dec stack_ptr_reg                   // make room on stack
     sto x8, stack_ptr_reg               // push return addr
     cmp x6, arg_a_reg                   // compare num against 10
     and flag_reg, x7                    // test if greater or equal
-    jin divide                          // if true, GOTO divide
+    jin divide                          // if true GOTO divide
     ldi pc_reg, (skip_div_10 1 -)       // else skip the printing
 
     return_div_10:
         // return_reg == num / 10
         // arg_a_reg == num % 10
         ldi x8, ascii_offset            // load ascii offset
-        add x8, return_reg              // add the return val to offset
+        add x8, return_reg              // add return val to offset
         sto x8, x0                      // print (num / 10)
 
     skip_div_10:
         inc stack_ptr_reg               // deallocate return addr
+
 
     // Third print:
     ldi x8, ascii_offset                // load ascii offset
@@ -166,12 +167,11 @@ divide:
     cmp arg_b_reg, x0                   // Compare divisor against 0
     jin divide_loop                     // if divisor != 0 GOTO divide_loop
     ldi pc_reg, (divide_return 1 -)     // else GOTO divide_return
-
-    ldi arg_c_reg, sign_bit_flag        // load flag bitmask into arg_r_reg
     
     // While num_a > num_b subtract num_b from num_a and increment return_reg
     divide_loop:
         cmp arg_a_reg, arg_b_reg        // compare num_a and num_b
+        ldi arg_c_reg, sign_bit_flag    // load flag bitmask into arg_r_reg
         and flag_reg, arg_c_reg         // test for sign bit flag
         jin divide_return               // if num_a < num_b GOTO divide_return
         inc return_reg                  // increment quotient

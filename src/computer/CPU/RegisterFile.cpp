@@ -78,3 +78,19 @@ void RegisterFile::SetFlag(FlagAddr addr)
 #endif
     this->registers.at(FLAG_REG_ADDR).write(this->registers.at(FLAG_REG_ADDR).read() | (uint8_t(1) << addr));
 }
+
+#ifndef NDEBUG
+void format_log_reg(std::ostream& log)
+{
+    log << std::left << std::setw(4) << std::setfill(' ');
+}
+
+void RegisterFile::Print(std::ostream &os)
+{
+    for (size_t i = 0; i < REG_FILE_SIZE; i++)
+    {
+        format_log_reg(os);
+        os << int(this->Read(i)) << " ";
+    }
+}
+#endif

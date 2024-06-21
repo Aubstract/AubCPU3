@@ -9,6 +9,14 @@ inline constexpr uint16_t ARG_A_BITMASK = 0x00F0;
 inline constexpr uint16_t ARG_B_BITMASK = 0x0F00;
 inline constexpr uint16_t UPPER_BYTE_BITMASK = 0xFF00;
 
+CPU::CPU(std::ofstream& log_file,
+         std::ostream& console_out,
+         std::istream& console_in)
+         : log(log_file),
+           io_mem(console_out, console_in)
+
+{}
+
 uint16_t CPU::Fetch(uint8_t PC)
 {
     return prog_mem.Read(PC);
@@ -83,9 +91,98 @@ void decode_pattern_g(std::vector<uint8_t>& args, uint16_t instr)
     args.push_back(temp_arg);
 }
 
+#ifndef NDEBUG
+void format_log(std::ostream& log)
+{
+    log << std::left << std::setw(4) << std::setfill(' ');
+}
+
+void debug_print_op(std::ostream& log, uint8_t op)
+{
+    std::string str_op;
+
+    switch (op)
+    {
+        case HLT:
+            str_op = "HLT";
+            break;
+
+        case JIN:
+            str_op = "JIN";
+            break;
+
+        case CMP:
+            str_op = "CMP";
+            break;
+
+        case ADD:
+            str_op = "ADD";
+            break;
+
+        case SUB:
+            str_op = "SUB";
+            break;
+
+        case AND:
+            str_op = "AND";
+            break;
+
+        case ORR:
+            str_op = "ORR";
+            break;
+
+        case XOR:
+            str_op = "XOR";
+            break;
+
+        case LSH:
+            str_op = "LSH";
+            break;
+
+        case RSH:
+            str_op = "RSH";
+            break;
+
+        case INC:
+            str_op = "INC";
+            break;
+
+        case DEC:
+            str_op = "DEC";
+            break;
+
+        case LOD:
+            str_op = "LOD";
+            break;
+
+        case LDI:
+            str_op = "LDI";
+            break;
+
+        case STO:
+            str_op = "STO";
+            break;
+
+        case CPR:
+            str_op = "CPR";
+            break;
+
+        default:
+            str_op = "UHOHHHHHHH";
+            break;
+    }
+    format_log(log);
+    log << str_op << " ";
+}
+#endif
+
 void CPU::DecodeAndExecute(uint16_t instr)
 {
     uint8_t opcode = instr & OPCODE_BITMASK;
+#ifndef NDEBUG
+    debug_print_op(log, opcode);
+#endif
+
     std::vector<uint8_t> args;
 
     uint8_t alu_in_a,
@@ -315,6 +412,20 @@ void CPU::DecodeAndExecute(uint16_t instr)
 #endif
             break;
     }
+#ifndef NDEBUG
+    for (size_t i = 0; i < 2; i++)
+    {
+        format_log(log);
+        if (i < args.size())
+        {
+            log << int(args.at(i)) << " ";
+        }
+        else
+        {
+            log << " " << " ";
+        }
+    }
+#endif
 }
 
 void CPU::Run(int64_t num_cycles)
@@ -342,90 +453,19 @@ void CPU::Run(int64_t num_cycles)
     }
 }
 
-void debug_print_op(uint8_t op)
-{
-    std::string str_op;
-
-    switch (op)
-    {
-        case HLT:
-            str_op = "HLT";
-            break;
-
-        case JIN:
-            str_op = "JIN";
-            break;
-
-        case CMP:
-            str_op = "CMP";
-            break;
-
-        case ADD:
-            str_op = "ADD";
-            break;
-
-        case SUB:
-            str_op = "SUB";
-            break;
-
-        case AND:
-            str_op = "AND";
-            break;
-
-        case ORR:
-            str_op = "ORR";
-            break;
-
-        case XOR:
-            str_op = "XOR";
-            break;
-
-        case LSH:
-            str_op = "LSH";
-            break;
-
-        case RSH:
-            str_op = "RSH";
-            break;
-
-        case INC:
-            str_op = "INC";
-            break;
-
-        case DEC:
-            str_op = "DEC";
-            break;
-
-        case LOD:
-            str_op = "LOD";
-            break;
-
-        case LDI:
-            str_op = "LDI";
-            break;
-
-        case STO:
-            str_op = "STO";
-            break;
-
-        case CPR:
-            str_op = "CPR";
-            break;
-
-        default:
-            str_op = "UHOHHHHHHH";
-            break;
-    }
-
-    std::cout << '\n' << str_op << '\t' << std::flush;
-}
-
 void CPU::Step()
 {
     uint16_t instruction = Fetch(reg_file.Read(PROG_CNTR_ADDR));
-    // debug_print_op(instruction & OPCODE_BITMASK);
+#ifndef NDEBUG
+    format_log(log);
+    log << int(cycles + 1) << " ";
+#endif
     DecodeAndExecute(instruction);
     cycles++;
+#ifndef NDEBUG
+    reg_file.Print(log);
+    log << std::endl;
+#endif
 }
 
 void CPU::ResetMemory()

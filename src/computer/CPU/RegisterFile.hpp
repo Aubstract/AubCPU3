@@ -8,6 +8,10 @@
 #include "Memory.hpp"
 #include <cstdint>
 #include <cassert>
+#include <iostream>
+#ifndef NDEBUG
+#include <iomanip>
+#endif
 
 enum FlagAddr
 {
@@ -36,6 +40,10 @@ public:
     void UpdateFlags(uint16_t data, uint8_t input_a, uint8_t input_b);
     void ClearFlags();
     bool TestFlag(FlagAddr addr) const;
+
+#ifndef NDEBUG
+    void Print(std::ostream& os);
+#endif
 };
 
 #endif //SOFTCPU2_REGISTERFILE_HPP
