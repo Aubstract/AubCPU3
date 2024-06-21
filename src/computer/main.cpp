@@ -1,13 +1,19 @@
 //#define NDEBUG
 
+#include "CPU/CPU.hpp"
 #include <cassert>
 #include <fstream>
-#include "CPU/CPU.hpp"
+#include <string>
 
-int main() {
+int main()
+{
     CPU cpu;
-    std::ifstream fib_bin("../src/assembler/bin_files/fib.bin", std::ios::binary | std::ios::in);
+    std::string path;
 
+    std::cout << "Enter the file path to the binary file: " << std::flush;
+    std::cin >> path;
+
+    std::ifstream fib_bin(path, std::ios::binary | std::ios::in);
     assert(fib_bin);
 
     cpu.LoadProgram(fib_bin);

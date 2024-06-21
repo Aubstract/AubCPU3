@@ -1,0 +1,29 @@
+// Created by Aubrey on 6/20/2024
+// Test program
+
+E: 69
+n: 110
+t: 116
+e: 101
+r: 114
+colon: 58
+
+console_in_addr: 1
+
+ldi x5, E
+sto x5, x0
+ldi x5, n
+sto x5, x0
+ldi x5, t
+sto x5, x0
+ldi x5, e
+sto x5, x0
+ldi x5, r
+sto x5, x0
+ldi x5, colon
+sto x5, x0
+
+ldi x6, console_in_addr
+lod x5, x6
+
+sto x5, x0 // print it back

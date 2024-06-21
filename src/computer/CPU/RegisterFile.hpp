@@ -32,6 +32,7 @@ private:
     void SetFlag(FlagAddr addr);
 public:
     void Write(size_t addr, uint8_t data) override;
+    void Clear() override;
     void UpdateFlags(uint16_t data, uint8_t input_a, uint8_t input_b);
     void ClearFlags();
     bool TestFlag(FlagAddr addr) const;

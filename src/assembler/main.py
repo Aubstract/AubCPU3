@@ -34,6 +34,9 @@ def main():
     for instr in program:
         print(instr)
 
+    print(dict.jump_labels)
+    print(dict.var_labels)
+
     with open(f"bin_files/{file_name}.bin", "wb") as f:
         for value in program:
             # Convert integer to 2-byte bytearray with little-endian byte order

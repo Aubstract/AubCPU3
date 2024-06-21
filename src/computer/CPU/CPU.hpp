@@ -5,22 +5,24 @@
 #ifndef SOFTCPU2_CPU_HPP
 #define SOFTCPU2_CPU_HPP
 
+#include <string>
+
 #include "ALU.hpp"
 #include "Memory.hpp"
+#include "IOManager.hpp"
 #include "RegisterFile.hpp"
 #include "Opcode.hpp"
 #include <cassert>
 #include <fstream>
 #include <vector>
 
-inline constexpr size_t DATA_MEM_SIZE = 256;
 inline constexpr size_t PROG_MEM_SIZE = 256;
 
 class CPU
 {
 private:
     RegisterFile reg_file;
-    Memory<uint8_t, DATA_MEM_SIZE> data_mem;
+    IOManager io_mem;
     Memory<uint16_t, PROG_MEM_SIZE> prog_mem;
 
     uint64_t cycles = 0;

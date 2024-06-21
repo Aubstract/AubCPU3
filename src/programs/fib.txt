@@ -1,27 +1,182 @@
 // Created by Aubrey on 6/18/2024
 // Fibonacci Program for SoftCPU2
 
-test_var: 5
-test_var_2: . test_var + 1 -
-
 carry_out_flag: 4
+ascii_space: 32
 
 start:
-    ldi x5, 0 // 93
-    ldi x6, 1 // 365
+    // load bitmask for carry flag
+    ldi x8, carry_out_flag
+
+    // load first two terms
+    ldi x5, 0
+    ldi x6, 1
+
     // print first two terms
+    ldi x9, ascii_offset                // x9 = ascii_offset
+    cpr x10, x9                         // x10 = ascii_offset (x10 acts as accumulator)
+    add x10, x5                         // x10 = ascii_offset + first term
+    sto x10, x0                         // print first term to console
+    ldi x10, ascii_space                // load ascii code for empty space char
+    sto x10, x0                         // print space
+    cpr x10, x9                         // x10 = ascii_offset
+    add x10, x6                         // x10 = ascii_offset + second term
+    sto x10, x0                         // print second term to console
+    ldi x10, ascii_space                // load ascii code for empty space char
+    sto x10, x0                         // print space
 
-main_loop:
-    cpr x7, x5 // 1407
-    add x7, x6 // 1651
-    cpr x5, x6 // 1631
-    cpr x6, x7 // 1903
+fib_loop:
+    cpr x7, x5                          // copy first term to x7 (x7 acts as accumulator)
+    add x7, x6                          // compute fib
+    cpr x5, x6                          // move terms for next iteration
+    cpr x6, x7
 
-    ldi x8, carry_out_flag // 1165
-    and flag_reg, x8 // 2261
-    jin halt // 2561
-    // print new term stored in x6
-    ldi pc_reg, (main_loop 1 -) // 509
+    and flag_reg, x8                    // test carry flag using bitmask in x8
+    jin halt                            // if carry is set, end program
+
+    ldi x11, (return_from_print 1 -)    // load the return address
+    dec stack_ptr_reg                   // make room on stack
+    sto x11, stack_ptr_reg              // push return addr
+    cpr arg_a_reg, x6                   // copy fib term to arg_a
+    ldi pc_reg, (print_uint 1 -)        // GOTO print_uint
+    
+    return_from_print:
+        inc stack_ptr_reg
+
+    ldi x10, ascii_space                // load ascii code for empty space char
+    sto x10, x0                         // print space
+
+    ldi pc_reg, (fib_loop 1 -)          // GOTO fib_loop
 
 halt:
-    hlt // 0
+    hlt                                 // end of program
+
+print_uint:
+    // Notes:
+    // Since the CPU is 8-bit, num is in range [0,255]
+    // if num >= 100 then print(num / 100) and then num %= 100
+    // if num >= 10 then print(num / 10) and then num %= 10
+    // if num < 10 then print(num)
+    //
+    // Arguments:
+    // arg_a_reg = num
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+    //
+    // Return Value:
+    // Nothing
+    //
+    // Definitions:
+    ascii_offset: 48
+    greater_or_equal: 9
+
+    // save x5, x6, x7, x8
+    dec stack_ptr_reg
+    sto x5, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x6, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x7, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x8, stack_ptr_reg
+
+    ldi x5, 100                         // Load compare values
+    ldi x6, 10
+    ldi x7, greater_or_equal            // Load flag bitmask
+
+    // First print
+    cpr arg_b_reg, x5                   // arg_b_reg = 100
+    ldi x8, (return_div_100 1 -)        // load the return addr
+    dec stack_ptr_reg                   // make room on stack
+    sto x8, stack_ptr_reg               // push return addr
+    cmp x5, arg_a_reg                   // compare num against 100
+    and flag_reg, x7                    // test if greater or equal
+    jin divide                          // if true, GOTO divide
+    ldi pc_reg, (skip_div_100 1 -)      // else skip the printing
+
+    return_div_100:
+        // return_reg == num / 100
+        // arg_a_reg == num % 100
+        ldi x8, ascii_offset            // load ascii offset
+        add x8, return_reg              // add the return val to offset
+        sto x8, x0                      // print (num / 100)
+
+    skip_div_100:
+        inc stack_ptr_reg               // deallocate return addr
+
+    // Second print
+    cpr arg_b_reg, x6                   // arg_b_reg = 10
+    ldi x8, (return_div_10 1 -)         // load the return addr
+    dec stack_ptr_reg                   // make room on stack
+    sto x8, stack_ptr_reg               // push return addr
+    cmp x6, arg_a_reg                   // compare num against 10
+    and flag_reg, x7                    // test if greater or equal
+    jin divide                          // if true, GOTO divide
+    ldi pc_reg, (skip_div_10 1 -)       // else skip the printing
+
+    return_div_10:
+        // return_reg == num / 10
+        // arg_a_reg == num % 10
+        ldi x8, ascii_offset            // load ascii offset
+        add x8, return_reg              // add the return val to offset
+        sto x8, x0                      // print (num / 10)
+
+    skip_div_10:
+        inc stack_ptr_reg               // deallocate return addr
+
+    // Third print:
+    ldi x8, ascii_offset                // load ascii offset
+    add x8, arg_a_reg                   // add (num % 10) to x8
+    sto x8, x0                          // print (num % 10)
+
+    // restore x8, x7, x6, x5
+    lod x8, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x7, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x6, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x5, stack_ptr_reg
+    inc stack_ptr_reg
+
+    lod pc_reg, stack_ptr_reg           // return to caller
+
+divide:
+    // Notes:
+    // In the case of a divide by zero, this subroutine
+    // returns 0
+    //
+    // Arguments:
+    // arg_a_reg = num_a
+    // arg_b_reg = num_b
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+    //
+    // Return Value:
+    // num_a / num_b
+    //
+    // Definitions:
+    sign_bit_flag: 8                    // 00001000
+    
+    ldi return_reg, 0                   // Default quotient is 0
+
+    // Check for divide by zero case
+    cmp arg_b_reg, x0                   // Compare divisor against 0
+    jin divide_loop                     // if divisor != 0 GOTO divide_loop
+    ldi pc_reg, (divide_return 1 -)     // else GOTO divide_return
+
+    ldi arg_c_reg, sign_bit_flag        // load flag bitmask into arg_r_reg
+    
+    // While num_a > num_b subtract num_b from num_a and increment return_reg
+    divide_loop:
+        cmp arg_a_reg, arg_b_reg        // compare num_a and num_b
+        and flag_reg, arg_c_reg         // test for sign bit flag
+        jin divide_return               // if num_a < num_b GOTO divide_return
+        inc return_reg                  // increment quotient
+        sub arg_a_reg, arg_b_reg        // else num_a -= num_b
+        ldi pc_reg, (divide_loop 1 -)   // GOTO divide_loop
+
+    divide_return:
+        lod pc_reg, stack_ptr_reg       // return to caller

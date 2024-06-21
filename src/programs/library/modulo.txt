@@ -1,0 +1,31 @@
+// Created by Aubrey on 6/20/2024
+// Modulo Program for use in a standard library
+
+modulo:
+    // Arguments:
+    // arg_a_reg = num_a
+    // arg_b_reg = num_b
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+    //
+    // Return Value:
+    // num_a % num_b
+    //
+    // Definitions:
+    sign_bit_flag: 8                // 00001000
+
+    ldi return_reg, 0               // Default ret val is 0
+    ldi arg_c_reg, sign_bit_flag    // load flag bitmask into arg_r_reg
+
+    // While num_a > num_b subtract num_b from num_a
+modulo_loop:
+    cmp arg_a_reg, arg_b_reg        // compare num_a and num_b
+    and flag_reg, arg_c_reg         // test for sign bit flag
+    jin modulo_return               // if num_a < num_b GOTO modulo_return
+    sub arg_a_reg, arg_b_reg        // else num_a -= num_b
+    ldi pc_reg, (modulo_loop 1 -)   // GOTO modulo_loop
+
+modulo_return:
+    cpr return_reg, arg_a_reg       // copy num_a to return_reg
+    lod pc_reg, stack_ptr_reg       // return to caller

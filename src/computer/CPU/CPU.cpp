@@ -269,7 +269,7 @@ void CPU::DecodeAndExecute(uint16_t instr)
             decode_pattern_b(args, instr);
             // No execute
             // Write back
-            reg_file.Write(args.at(0), data_mem.Read(args.at(1)));
+            reg_file.Write(args.at(0), io_mem.Read(reg_file.Read(args.at(1))));
             // Don't update flags
             // Increment PC
             reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
@@ -291,7 +291,7 @@ void CPU::DecodeAndExecute(uint16_t instr)
             decode_pattern_c(args, instr);
             // No execute
             // Write back
-            data_mem.Write(args.at(1), reg_file.Read(args.at(0)));
+            io_mem.Write(reg_file.Read(args.at(1)), reg_file.Read(args.at(0)));
             // Don't update flags
             // Increment PC
             reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
@@ -342,9 +342,88 @@ void CPU::Run(int64_t num_cycles)
     }
 }
 
+void debug_print_op(uint8_t op)
+{
+    std::string str_op;
+
+    switch (op)
+    {
+        case HLT:
+            str_op = "HLT";
+            break;
+
+        case JIN:
+            str_op = "JIN";
+            break;
+
+        case CMP:
+            str_op = "CMP";
+            break;
+
+        case ADD:
+            str_op = "ADD";
+            break;
+
+        case SUB:
+            str_op = "SUB";
+            break;
+
+        case AND:
+            str_op = "AND";
+            break;
+
+        case ORR:
+            str_op = "ORR";
+            break;
+
+        case XOR:
+            str_op = "XOR";
+            break;
+
+        case LSH:
+            str_op = "LSH";
+            break;
+
+        case RSH:
+            str_op = "RSH";
+            break;
+
+        case INC:
+            str_op = "INC";
+            break;
+
+        case DEC:
+            str_op = "DEC";
+            break;
+
+        case LOD:
+            str_op = "LOD";
+            break;
+
+        case LDI:
+            str_op = "LDI";
+            break;
+
+        case STO:
+            str_op = "STO";
+            break;
+
+        case CPR:
+            str_op = "CPR";
+            break;
+
+        default:
+            str_op = "UHOHHHHHHH";
+            break;
+    }
+
+    std::cout << '\n' << str_op << '\t' << std::flush;
+}
+
 void CPU::Step()
 {
     uint16_t instruction = Fetch(reg_file.Read(PROG_CNTR_ADDR));
+    // debug_print_op(instruction & OPCODE_BITMASK);
     DecodeAndExecute(instruction);
     cycles++;
 }
@@ -352,7 +431,7 @@ void CPU::Step()
 void CPU::ResetMemory()
 {
     reg_file.Clear();
-    data_mem.Clear();
+    io_mem.ClearMem();
     prog_mem.Clear();
 }
 
