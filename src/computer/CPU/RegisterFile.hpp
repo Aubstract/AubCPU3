@@ -5,13 +5,15 @@
 #ifndef SOFTCPU2_REGISTERFILE_HPP
 #define SOFTCPU2_REGISTERFILE_HPP
 
+#ifndef NDEBUG
+    #include "../log/log.hpp"
+    #include <iomanip>
+#endif
+
 #include "Memory.hpp"
 #include <cstdint>
 #include <cassert>
 #include <iostream>
-#ifndef NDEBUG
-#include <iomanip>
-#endif
 
 enum FlagAddr
 {

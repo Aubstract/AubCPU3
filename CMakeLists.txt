@@ -19,4 +19,6 @@ add_executable(SoftCPU2
         src/computer/IO_Devices/ConsoleDevice.cpp
         src/computer/CPU/IOManager.hpp
         src/computer/CPU/IOManager.cpp
+        src/computer/log/log.hpp
+        src/computer/log/log.cpp
 )

@@ -15,7 +15,11 @@ CPU::CPU(std::ofstream& log_file,
          : log(log_file),
            io_mem(console_out, console_in)
 
-{}
+{
+#ifndef NDEBUG
+    init_log(log);
+#endif
+}
 
 uint16_t CPU::Fetch(uint8_t PC)
 {
@@ -91,96 +95,11 @@ void decode_pattern_g(std::vector<uint8_t>& args, uint16_t instr)
     args.push_back(temp_arg);
 }
 
-#ifndef NDEBUG
-void format_log(std::ostream& log)
-{
-    log << std::left << std::setw(4) << std::setfill(' ');
-}
-
-void debug_print_op(std::ostream& log, uint8_t op)
-{
-    std::string str_op;
-
-    switch (op)
-    {
-        case HLT:
-            str_op = "HLT";
-            break;
-
-        case JIN:
-            str_op = "JIN";
-            break;
-
-        case CMP:
-            str_op = "CMP";
-            break;
-
-        case ADD:
-            str_op = "ADD";
-            break;
-
-        case SUB:
-            str_op = "SUB";
-            break;
-
-        case AND:
-            str_op = "AND";
-            break;
-
-        case ORR:
-            str_op = "ORR";
-            break;
-
-        case XOR:
-            str_op = "XOR";
-            break;
-
-        case LSH:
-            str_op = "LSH";
-            break;
-
-        case RSH:
-            str_op = "RSH";
-            break;
-
-        case INC:
-            str_op = "INC";
-            break;
-
-        case DEC:
-            str_op = "DEC";
-            break;
-
-        case LOD:
-            str_op = "LOD";
-            break;
-
-        case LDI:
-            str_op = "LDI";
-            break;
-
-        case STO:
-            str_op = "STO";
-            break;
-
-        case CPR:
-            str_op = "CPR";
-            break;
-
-        default:
-            str_op = "UHOHHHHHHH";
-            break;
-    }
-    format_log(log);
-    log << str_op << " ";
-}
-#endif
-
 void CPU::DecodeAndExecute(uint16_t instr)
 {
     uint8_t opcode = instr & OPCODE_BITMASK;
 #ifndef NDEBUG
-    debug_print_op(log, opcode);
+    print_op(log, opcode);
 #endif
 
     std::vector<uint8_t> args;
@@ -418,11 +337,11 @@ void CPU::DecodeAndExecute(uint16_t instr)
         format_log(log);
         if (i < args.size())
         {
-            log << int(args.at(i)) << " ";
+            log << int(args.at(i));
         }
         else
         {
-            log << " " << " ";
+            log << " ";
         }
     }
 #endif
@@ -458,7 +377,7 @@ void CPU::Step()
     uint16_t instruction = Fetch(reg_file.Read(PROG_CNTR_ADDR));
 #ifndef NDEBUG
     format_log(log);
-    log << int(cycles + 1) << " ";
+    log << int(cycles + 1);
 #endif
     DecodeAndExecute(instruction);
     cycles++;

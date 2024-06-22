@@ -5,7 +5,10 @@
 #ifndef SOFTCPU2_CPU_HPP
 #define SOFTCPU2_CPU_HPP
 
-#include <string>
+#ifndef NDEBUG
+    #include "../log/log.hpp"
+    #include <iomanip>
+#endif
 
 #include "ALU.hpp"
 #include "Memory.hpp"
@@ -14,13 +17,11 @@
 #include "Opcode.hpp"
 #include <cassert>
 #include <iostream>
-#ifndef NDEBUG
-#include <iomanip>
-#endif
 #include <fstream>
+#include <string>
 #include <vector>
 
-inline constexpr size_t PROG_MEM_SIZE = 256;
+constexpr size_t PROG_MEM_SIZE = 256;
 
 class CPU
 {
