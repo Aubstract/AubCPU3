@@ -8,17 +8,7 @@ e: 101
 r: 114
 colon: 58
 
-console_op_addr: 1
-console_uint_op: 0
-console_int_op:  1
-console_char_op: 2
-console_in_addr: 2
-
-ldi x7, console_op_addr
-ldi x8, console_char_op
-ldi x9, console_uint_op
-ldi x10, console_int_op
-sto x8, x7                              // put console into char mode
+console_in_addr: 1
 
 ldi x5, E
 sto x5, x0
@@ -33,12 +23,7 @@ sto x5, x0
 ldi x5, colon
 sto x5, x0
 
-// This is the opcode, the other is the addr
-//  |
-//  V
-sto x10, x7                              // Put console into int mode
-
 ldi x6, console_in_addr
 lod x5, x6
 
-sto x5, x0                              // print it back
+sto x5, x0 // print it back

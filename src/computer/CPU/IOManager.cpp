@@ -16,7 +16,7 @@ uint8_t IOManager::Read(size_t addr)
     // Addressing an IO device
     if (addr < IO_ADDR_SPACE_SIZE)
     {
-        if (addr <= CONSOLE_BASE_ADDR + 2)
+        if (addr <= CONSOLE_BASE_ADDR + 1)
         {
             return console.Read(addr);
         }
@@ -30,7 +30,7 @@ void IOManager::Write(size_t addr, uint8_t data)
     // Addressing an IO device
     if (addr < IO_ADDR_SPACE_SIZE)
     {
-        if (addr <= CONSOLE_BASE_ADDR + 1)
+        if (addr == CONSOLE_BASE_ADDR)
         {
             console.Write(addr, data);
         }

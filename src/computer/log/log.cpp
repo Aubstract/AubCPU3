@@ -9,7 +9,7 @@ void format_log(std::ostream& log)
     log << std::left << std::setw(4) << std::setfill(' ');
 }
 
-void print_header(std::ostream& log)
+void init_log(std::ostream& log)
 {
     std::string header[] = {"Cyc", "Op", "A", "B", "Registers"};
 

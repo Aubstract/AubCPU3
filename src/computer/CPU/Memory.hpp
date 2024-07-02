@@ -8,9 +8,6 @@
 #include "Register.hpp"
 #include <array>
 #include <cstdint>
-#ifndef NDEBUG
-    #include <stdexcept>
-#endif
 
 template<typename T, size_t N>
 class Memory
@@ -20,24 +17,12 @@ protected:
 public:
     virtual T Read(size_t addr) const
     {
-#ifndef NDEBUG
-        if (addr >= registers.size())
-        {
-            throw std::out_of_range("Index out of range in Memory.Read()");
-        }
-#endif
-        return registers[addr].read();
+        return registers.at(addr).read();
     }
 
     virtual void Write(size_t addr, T data)
     {
-#ifndef NDEBUG
-        if (addr >= registers.size())
-        {
-            throw std::out_of_range("Index out of range in Memory.Write()");
-        }
-#endif
-        registers[addr].write(data);
+        registers.at(addr).write(data);
     }
 
     virtual void Clear()

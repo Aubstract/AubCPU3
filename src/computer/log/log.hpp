@@ -12,7 +12,7 @@
 #include <string>
 
 void format_log(std::ostream& log);
-void print_header(std::ostream& log);
+void init_log(std::ostream& log);
 void print_op(std::ostream& log, uint8_t op);
 
 #endif // SOFTCPU2_LOG_CPP

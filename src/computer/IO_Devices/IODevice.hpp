@@ -13,15 +13,13 @@ class IODevice
 {
 protected:
     uint8_t base_addr;
-    size_t addr_space_size;
     Memory<uint8_t, NUM_INPUT> input_mem;
     Memory<uint8_t, NUM_OUTPUT> output_mem;
     virtual void ReadActive(size_t addr) = 0;
     virtual void WriteActive(size_t addr) = 0;
 
 public:
-    IODevice(uint8_t base_addr) : base_addr(base_addr),
-                                  addr_space_size(NUM_INPUT + NUM_OUTPUT) {};
+    IODevice(uint8_t base_addr) : base_addr(base_addr) {};
 
     void Write(size_t addr, uint8_t data)
     {
