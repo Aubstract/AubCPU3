@@ -17,7 +17,7 @@
 
 enum FlagAddr
 {
-    zero,
+    zero = 0,
     not_zero,
     carry_out,
     sign_bit,

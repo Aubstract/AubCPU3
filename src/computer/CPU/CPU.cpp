@@ -15,11 +15,7 @@ CPU::CPU(std::ofstream& log_file,
          : log(log_file),
            io_mem(console_out, console_in)
 
-{
-#ifndef NDEBUG
-    init_log(log);
-#endif
-}
+{}
 
 uint16_t CPU::Fetch(uint8_t PC)
 {
@@ -376,6 +372,10 @@ void CPU::Step()
 {
     uint16_t instruction = Fetch(reg_file.Read(PROG_CNTR_ADDR));
 #ifndef NDEBUG
+    if (cycles % 50 == 0)
+    {
+        print_header(log);
+    }
     format_log(log);
     log << int(cycles + 1);
 #endif
