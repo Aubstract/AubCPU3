@@ -12,7 +12,7 @@
 
 #include "ALU.hpp"
 #include "Memory.hpp"
-#include "IOManager.hpp"
+#include "../IO_Devices/IOManager.hpp"
 #include "RegisterFile.hpp"
 #include "Opcode.hpp"
 #include <cassert>

@@ -15,10 +15,12 @@ add_executable(SoftCPU2
         src/computer/CPU/CPU.cpp
         src/computer/CPU/Memory.hpp
         src/computer/IO_Devices/IODevice.hpp
-        src/computer/IO_Devices/ConsoleDevice.hpp
-        src/computer/IO_Devices/ConsoleDevice.cpp
-        src/computer/CPU/IOManager.hpp
-        src/computer/CPU/IOManager.cpp
+        src/computer/IO_Devices/Console.hpp
+        src/computer/IO_Devices/Console.cpp
+        src/computer/IO_Devices/IOManager.hpp
+        src/computer/IO_Devices/IOManager.cpp
         src/computer/log/log.hpp
         src/computer/log/log.cpp
+        src/computer/IO_Devices/FancyConsole.hpp
+        src/computer/IO_Devices/FancyConsole.cpp
 )
