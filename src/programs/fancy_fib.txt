@@ -1,0 +1,54 @@
+// Created by Aubrey on  6/22/24
+// Fancy Fibonacci program to test the FancyConsole IO Device
+
+console_op_addr: 1
+console_uint_op: 0
+console_char_op: 2
+carry_out_flag: 4
+ascii_space: 32
+
+start:
+    // load bitmask for carry flag
+    ldi x8, carry_out_flag
+
+    // load first two terms
+    ldi x5, 0
+    ldi x6, 1
+
+    // Load console-related values
+    ldi x12, console_op_addr
+    ldi x11, console_char_op            // Load the console opcode for char mode
+    ldi x10, ascii_space                // Load the char ' '
+    ldi x9, console_uint_op             // Load the console opcode for uint mode
+
+    // Print the first term
+    sto x9, x12                         // Put console into uint mode
+    sto x5, x0                          // Print first term
+    sto x11, x12                        // Put console into char mode
+    sto x10, x0                         // Print space char
+
+    // Print the second term
+    sto x9, x12                         // Put console into uint mode
+    sto x6, x0                          // Print first term
+    sto x11, x12                        // Put console into char mode
+    sto x10, x0                         // Print space char
+
+fib_loop:
+    cpr x7, x5                          // copy first term to x7 (x7 acts as accumulator)
+    add x7, x6                          // compute fib
+    cpr x5, x6                          // move terms for next iteration
+    cpr x6, x7
+
+    and flag_reg, x8                    // test carry flag using bitmask in x8
+    jin halt                            // if carry is set, end program
+
+    // Print term
+    sto x9, x12                         // Put console into uint mode
+    sto x6, x0                          // Print the term
+    sto x11, x12                        // Put console into char mode
+    sto x10, x0                         // Print space char
+
+    ldi pc_reg, (fib_loop 1 -)          // GOTO fib_loop
+
+halt:
+    hlt                                 // end of program

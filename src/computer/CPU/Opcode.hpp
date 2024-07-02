@@ -7,7 +7,7 @@
 
 enum Opcode
 {
-    HLT,
+    HLT = 0,
     JIN,
     CMP,
     ADD,

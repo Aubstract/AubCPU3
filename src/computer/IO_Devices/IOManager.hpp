@@ -5,19 +5,21 @@
 #ifndef SOFTCPU2_IOMANAGER_HPP
 #define SOFTCPU2_IOMANAGER_HPP
 
-#include "../IO_Devices/ConsoleDevice.hpp"
-#include "Memory.hpp"
+#include "FancyConsole.hpp"
+#include "Console.hpp"
+#include "../CPU/Memory.hpp"
 #include <cstdint>
 #include <iostream>
 
-constexpr size_t DATA_MEM_SIZE = 256;
+constexpr size_t ADDR_SPACE_SIZE = 256;
 constexpr size_t IO_ADDR_SPACE_SIZE = 16;
+constexpr size_t MEM_ADDR_SPACE_SIZE = ADDR_SPACE_SIZE - IO_ADDR_SPACE_SIZE;
 
 class IOManager
 {
 private:
-    Memory<uint8_t, DATA_MEM_SIZE - IO_ADDR_SPACE_SIZE> data_mem;
-    ConsoleDevice console;
+    Memory<uint8_t, MEM_ADDR_SPACE_SIZE> data_mem;
+    FancyConsole console;
 public:
     IOManager(std::ostream& console_out, std::istream& console_in);
     uint8_t Read(size_t addr);
