@@ -28,17 +28,11 @@ def main():
     program = load_program(dict.src_file_path)
     program = link.link(program)
 
-    for line in program:
-        print(line)
-
     program = preprocess.preprocess(program)
     program = assemble.assemble(program)
 
     file_name = dict.src_file_path.split("\\")[-1]
     file_name = file_name[:file_name.index('.')]
-
-    for instr in program:
-        print(instr)
 
     print(dict.jump_labels)
     print(dict.var_labels)

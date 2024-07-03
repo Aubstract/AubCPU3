@@ -1,0 +1,50 @@
+// Created by Aubrey on 7/2/2024
+// Console utils for Standard Library
+
+console_out_addr: 0
+console_opcode_addr: 1
+console_in_addr: 2
+
+console_uint_mode_opcode: 0
+console_int_mode_opcode: 1
+console_char_mode_opcode: 2
+
+print:
+    // Arguments:
+    // arg_a_reg = data
+    // arg_b_reg = console_mode_opcode (uint, int, char...)
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+
+    // Put console into desired mode
+    ldi arg_c_reg, console_opcode_addr
+    sto arg_b_reg, arg_c_reg
+
+    // Print the uint
+    ldi arg_b_reg, console_out_addr
+    sto arg_a_reg, arg_b_reg
+
+    // Return from print_uint
+    lod pc_reg, stack_ptr_reg
+
+input:
+    // Arguments:
+    // arg_a_reg = console_mode_opcode (uint, int, char...)
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+    //
+    // Return Value:
+    // input
+
+    // Put console into desired mode
+    ldi arg_b_reg, console_opcode_addr
+    sto arg_a_reg, arg_b_reg
+
+    // Get input
+    ldi arg_b_reg, console_in_addr
+    lod return_reg, arg_b_reg
+
+    // Return from input_uint
+    lod pc_reg, stack_ptr_reg

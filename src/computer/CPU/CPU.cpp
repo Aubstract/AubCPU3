@@ -374,6 +374,10 @@ void CPU::Step()
 #ifndef NDEBUG
     if (cycles % 50 == 0)
     {
+        if (cycles != 0)
+        {
+            log << '\n';
+        }
         print_header(log);
     }
     format_log(log);
@@ -403,9 +407,6 @@ void CPU::LoadProgram(std::ifstream& input_file)
 {
     ResetMemory();
     uint8_t byte1, byte2;
-
-    // char* byte1_ptr = &byte1;
-    // char* byte2_ptr = &byte2;
 
     // Read two bytes at a time until read address is 256
     while (input_file.read(reinterpret_cast<char*>(&byte1), 1) && input_file.read(reinterpret_cast<char*>(&byte2), 1))
