@@ -38,6 +38,8 @@ def sanitize(program: list[object]):
             line = line[:-1]
         if "\n" in line:
             line = line[: line.index("\n")]
+        if "link" in line:
+            line = ""
 
         if len(line) == 0:
             program.pop(line_num)

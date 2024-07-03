@@ -101,15 +101,24 @@ def check_opcodes_and_operands(program: list[object]) -> None:
             if token.isnumeric():
                 value = int(token)
                 if value < min_val or value > max_val:
-                    throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:"
+                    throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:\n"
                                 f"{line_object.line}")
             elif token in dict.var_labels:
                 value = int(dict.var_labels[token])
                 if value < min_val or value > max_val:
-                    throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:"
+                    throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:\n"
                                 f"{line_object.line}")
             elif token in dict.jump_labels:
                 value = int(dict.jump_labels[token])
                 if value < min_val or value > max_val:
-                    throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:"
+                    throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:\n"
                                 f"{line_object.line}")
+
+
+def check_link_statements(program: list[str]) -> None:
+    for line in program:
+        if "link" in line:
+            tokens = line.split()
+            if len(tokens) != 2:
+                throw_error(f"Invalid number of tokens in link statement:\n"
+                            f"{line[:-1]}")  # minus the newline char

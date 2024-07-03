@@ -2,6 +2,7 @@
 # Source Code Stuff
 #=======================================================
 src/computer/log/log.txt
+src/assembler/bin_files/*
 
 #=======================================================
 # Python is below

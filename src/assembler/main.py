@@ -1,6 +1,7 @@
 # this will be the entry point for the assembler
-import preprocess
 import dictionaries as dict
+import preprocess
+import link
 import assemble
 
 
@@ -23,12 +24,17 @@ def load_program(file_path: str) -> list[str]:
 
 
 def main():
-    file_path = get_file_path()
-    program = load_program(file_path)
+    dict.src_file_path = get_file_path()
+    program = load_program(dict.src_file_path)
+    program = link.link(program)
+
+    for line in program:
+        print(line)
+
     program = preprocess.preprocess(program)
     program = assemble.assemble(program)
 
-    file_name = file_path.split("\\")[-1]
+    file_name = dict.src_file_path.split("\\")[-1]
     file_name = file_name[:file_name.index('.')]
 
     for instr in program:
