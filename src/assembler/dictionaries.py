@@ -1,3 +1,5 @@
+src_file_path = ""
+link_files = []
 jump_labels = {}
 var_labels = {}
 
