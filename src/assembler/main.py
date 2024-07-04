@@ -1,8 +1,9 @@
 # this will be the entry point for the assembler
-import dictionaries as dict
-import preprocess
+import dictionaries as dicts
 import link
+import preprocess as pre
 import assemble
+import postprocess as post
 
 
 def get_file_path() -> str:
@@ -24,25 +25,27 @@ def load_program(file_path: str) -> list[str]:
 
 
 def main():
-    dict.src_file_path = get_file_path()
-    program = load_program(dict.src_file_path)
+    # Assemble program
+    dicts.src_file_path = get_file_path()
+    program = load_program(dicts.src_file_path)
     program = link.link(program)
-
-    program = preprocess.preprocess(program)
+    program = pre.preprocess(program)
     program = assemble.assemble(program)
-
-    file_name = dict.src_file_path.split("\\")[-1]
+    
+    # Build output binary file path
+    file_name = dicts.src_file_path.split("\\")[-1]
     file_name = file_name[:file_name.index('.')]
-
-    print(dict.jump_labels)
-    print(dict.var_labels)
-
+    
+    # Write to binary file
     with open(f"bin_files/{file_name}.bin", "wb") as f:
         for value in program:
             # Convert integer to 2-byte bytearray with little-endian byte order
             bytes_data = value.to_bytes(2, byteorder="little")
             f.write(bytes_data)
-
+    
+    # Post process
+    post.postprocess(program)
+    
 
 if __name__ == "__main__":
     main()

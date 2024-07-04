@@ -7,7 +7,6 @@
 
 #ifndef NDEBUG
     #include "../log/log.hpp"
-    #include <iomanip>
 #endif
 
 #include "ALU.hpp"

@@ -1,5 +1,5 @@
 import Line
-import dictionaries as dict
+import dictionaries as dicts
 import error_check as err
 
 
@@ -59,10 +59,10 @@ def replace_labels_in_expression(line: str, line_index: int) -> str:
     tokens = expression.split()
 
     for index, token in enumerate(tokens):
-        if token in dict.jump_labels:
-            tokens[index] = dict.jump_labels[token]
-        elif token in dict.var_labels:
-            tokens[index] = dict.var_labels[token]
+        if token in dicts.jump_labels:
+            tokens[index] = dicts.jump_labels[token]
+        elif token in dicts.var_labels:
+            tokens[index] = dicts.var_labels[token]
         elif token == '.':
             tokens[index] = str(line_index)
 
@@ -115,13 +115,13 @@ def construct_labels(program: list[object]):
     for line_object in program:
         if ':' in line_object.line:
             if line_object.line.endswith(':'):
-                dict.jump_labels[line_object.line[:-1]] = str(line_index)
+                dicts.jump_labels[line_object.line[:-1]] = str(line_index)
                 line_index -= 1
             else:
                 err.check_expression(line_object)
                 expression = replace_labels_in_expression(line_object.line, line_index)
                 expression = evaluate_rpn(expression)
-                dict.var_labels[line_object.line[:line_object.line.index(':')]] = expression
+                dicts.var_labels[line_object.line[:line_object.line.index(':')]] = expression
                 line_index -= 1
         line_index += 1
     remove_labels(program)
@@ -136,10 +136,10 @@ def evaluate_inline_expressions(program: list[object]) -> list[object]:
             expression = line_object.line[expr_left + 1: expr_right]
             expression = expression.split()
             for index, token in enumerate(expression):
-                if token in dict.var_labels:
-                    expression[index] = dict.var_labels[token]
-                elif token in dict.jump_labels:
-                    expression[index] = dict.jump_labels[token]
+                if token in dicts.var_labels:
+                    expression[index] = dicts.var_labels[token]
+                elif token in dicts.jump_labels:
+                    expression[index] = dicts.jump_labels[token]
             expression = ' '.join(expression)
             expression = evaluate_rpn(expression)
             expression = line_object.line[:expr_left] + expression + line_object.line[expr_right + 1:]
@@ -153,14 +153,14 @@ def replace_inline_labels_with_literals(program: list[object]):
         tokens = line.split()
 
         for index, token in enumerate(tokens):
-            if token in dict.var_labels:
-                tokens[index] = dict.var_labels[token]
-            elif token in dict.jump_labels:
-                tokens[index] = dict.jump_labels[token]
-            elif token in dict.register_names:
-                tokens[index] = dict.register_names[token]
-            elif token in dict.alt_register_names:
-                tokens[index] = dict.alt_register_names[token]
+            if token in dicts.var_labels:
+                tokens[index] = dicts.var_labels[token]
+            elif token in dicts.jump_labels:
+                tokens[index] = dicts.jump_labels[token]
+            elif token in dicts.register_names:
+                tokens[index] = dicts.register_names[token]
+            elif token in dicts.alt_register_names:
+                tokens[index] = dicts.alt_register_names[token]
         line_object.line = ' '.join(tokens)
 
     return program

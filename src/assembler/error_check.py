@@ -1,5 +1,5 @@
 import Line
-import dictionaries as dict
+import dictionaries as dicts
 
 
 def throw_error(err_msg: str) -> None:
@@ -19,9 +19,9 @@ def check_expression(line_object: object) -> None:
 
         if token.isnumeric():
             token_valid = True
-        elif token in dict.jump_labels:
+        elif token in dicts.jump_labels:
             token_valid = True
-        elif token in dict.var_labels:
+        elif token in dicts.var_labels:
             token_valid = True
         elif token == '.':
             token_valid = True
@@ -41,13 +41,13 @@ def check_if_all_labels_are_defined(program: list[object]) -> None:
 
             if token.isnumeric():
                 token_valid = True
-            elif token in dict.var_labels:
+            elif token in dicts.var_labels:
                 token_valid = True
-            elif token in dict.jump_labels:
+            elif token in dicts.jump_labels:
                 token_valid = True
-            elif token in dict.register_names:
+            elif token in dicts.register_names:
                 token_valid = True
-            elif token in dict.alt_register_names:
+            elif token in dicts.alt_register_names:
                 token_valid = True
 
             if not token_valid:
@@ -61,7 +61,7 @@ def check_opcodes_and_operands(program: list[object]) -> None:
 
         # Check for valid opcode
         opcode = tokens[0]
-        if opcode not in dict.opcodes:
+        if opcode not in dicts.opcodes:
             throw_error(f"Unknown opcode '{opcode}' in line {line_object.line_num}:\n"
                         f"{line_object.line}")
 
@@ -81,7 +81,7 @@ def check_opcodes_and_operands(program: list[object]) -> None:
         # Check that operands are valid register addresses
         min_reg_addr = 0
         max_reg_addr = 15
-        if opcode in dict.opcodes and opcode not in ["hlt", "jin"]:
+        if opcode in dicts.opcodes and opcode not in ["hlt", "jin"]:
             valid_addr = True
             if tokens[1].isnumeric():
                 addr = int(tokens[1])
@@ -103,13 +103,13 @@ def check_opcodes_and_operands(program: list[object]) -> None:
                 if value < min_val or value > max_val:
                     throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:\n"
                                 f"{line_object.line}")
-            elif token in dict.var_labels:
-                value = int(dict.var_labels[token])
+            elif token in dicts.var_labels:
+                value = int(dicts.var_labels[token])
                 if value < min_val or value > max_val:
                     throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:\n"
                                 f"{line_object.line}")
-            elif token in dict.jump_labels:
-                value = int(dict.jump_labels[token])
+            elif token in dicts.jump_labels:
+                value = int(dicts.jump_labels[token])
                 if value < min_val or value > max_val:
                     throw_error(f"Value '{value}' in  line {line_object.line_num} is out of range [{min_val},{max_val}]:\n"
                                 f"{line_object.line}")

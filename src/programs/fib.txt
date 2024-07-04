@@ -1,5 +1,6 @@
 // Created by Aubrey on 6/18/2024
 // Fibonacci Program for SoftCPU2
+
 link "library/console.txt"
 
 entry:
