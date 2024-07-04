@@ -23,14 +23,14 @@ void FancyConsole::WriteActive(size_t addr)
 {
     if (addr == 1)
     {
-        op = static_cast<ConsoleOpcode>(output_mem.Read(addr));
+        this->op = static_cast<ConsoleOpcode>(output_mem.Read(addr));
         return;
     }
 
-    switch (op)
+    switch (this->op)
     {
         case UINT:
-            os << (unsigned int)(output_mem.Read(addr));
+            os << int(output_mem.Read(addr));
             break;
         case INT:
             os << signed_byte_to_int(output_mem.Read(addr));
@@ -48,7 +48,7 @@ void FancyConsole::ReadActive(size_t addr)
     int int_buff;
     char char_buff;
 
-    switch (op)
+    switch (this->op)
     {
         case UINT:
             is >> uint_buff;

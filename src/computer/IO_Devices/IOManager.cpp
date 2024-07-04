@@ -4,21 +4,22 @@
 
 #include "IOManager.hpp"
 
-constexpr size_t CONSOLE_BASE_ADDR = 0;
-
-
-IOManager::IOManager(std::ostream& console_out, std::istream& console_in)
-                     : console(CONSOLE_BASE_ADDR, console_out, console_in)
-{}
+constexpr size_t CONSOLE_OUT_ADDR = 0;
+constexpr size_t CONSOLE_OPCODE_ADDR = 1;
+constexpr size_t CONSOLE_IN_ADDR = 2;
 
 uint8_t IOManager::Read(size_t addr)
 {
     // Addressing an IO device
     if (addr < IO_ADDR_SPACE_SIZE)
     {
-        if (addr <= CONSOLE_BASE_ADDR + 2)
+        if (addr == CONSOLE_IN_ADDR)
         {
             return console.Read(addr);
+        }
+        else
+        {
+            throw std::out_of_range("Invalid read address in IOManager::Read()");
         }
     }
 
@@ -30,9 +31,13 @@ void IOManager::Write(size_t addr, uint8_t data)
     // Addressing an IO device
     if (addr < IO_ADDR_SPACE_SIZE)
     {
-        if (addr <= CONSOLE_BASE_ADDR + 1)
+        if (addr == CONSOLE_OUT_ADDR || addr == CONSOLE_OPCODE_ADDR)
         {
             console.Write(addr, data);
+        }
+        else
+        {
+            throw std::out_of_range("Invalid write address in IOManager::Write()");
         }
     }
     else

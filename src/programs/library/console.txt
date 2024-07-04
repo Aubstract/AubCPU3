@@ -21,11 +21,11 @@ print:
     ldi arg_c_reg, console_opcode_addr
     sto arg_b_reg, arg_c_reg
 
-    // Print the uint
-    ldi arg_b_reg, console_out_addr
-    sto arg_a_reg, arg_b_reg
+    // Print the data
+    ldi arg_c_reg, console_out_addr
+    sto arg_a_reg, arg_c_reg
 
-    // Return from print_uint
+    // Return from print
     lod pc_reg, stack_ptr_reg
 
 input:
@@ -46,5 +46,5 @@ input:
     ldi arg_b_reg, console_in_addr
     lod return_reg, arg_b_reg
 
-    // Return from input_uint
+    // Return from input
     lod pc_reg, stack_ptr_reg

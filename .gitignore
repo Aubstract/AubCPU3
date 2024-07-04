@@ -1,8 +1,8 @@
 #=======================================================
 # Source Code Stuff
 #=======================================================
-src/computer/log/*.txt
-src/assembler/bin_files/
+src/computer/log/log_files/*
+src/assembler/bin_files/*
 
 #=======================================================
 # Python is below

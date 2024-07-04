@@ -6,7 +6,7 @@
 
 int main()
 {
-    std::ofstream log("../src/computer/log/log.txt");
+    std::ofstream log("../src/computer/log/log_files/log.txt");
 
     CPU cpu(log, std::cout, std::cin);
 

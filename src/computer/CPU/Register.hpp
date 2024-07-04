@@ -11,8 +11,14 @@ class Register
 private:
     T reg = 0;
 public:
-    T read() const { return reg; }
-    void write(T data) { reg = data; }
+    T read() const
+    {
+        return reg;
+    }
+    void write(T data)
+    {
+        reg = data;
+    }
 };
 
 #endif //SOFTCPU2_REGISTER_HPP

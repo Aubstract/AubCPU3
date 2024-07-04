@@ -14,7 +14,6 @@ CPU::CPU(std::ofstream& log_file,
          std::istream& console_in)
          : log(log_file),
            io_mem(console_out, console_in)
-
 {}
 
 uint16_t CPU::Fetch(uint8_t PC)

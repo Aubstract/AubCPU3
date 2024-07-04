@@ -21,7 +21,7 @@ private:
     Memory<uint8_t, MEM_ADDR_SPACE_SIZE> data_mem;
     FancyConsole console;
 public:
-    IOManager(std::ostream& console_out, std::istream& console_in);
+    IOManager(std::ostream& out, std::istream& in) : console(out, in) {};
     uint8_t Read(size_t addr);
     void Write(size_t addr, uint8_t data);
     void ClearMem();

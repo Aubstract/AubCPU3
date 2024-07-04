@@ -19,9 +19,8 @@ private:
     void WriteActive(size_t addr) override;
     void ReadActive(size_t addr) override;
 public:
-    Console(uint8_t base_addr, std::ostream& console_out, std::istream& console_in) : IODevice(base_addr),
-                                                                                            os(console_out),
-                                                                                            is(console_in) {};
+    Console(std::ostream& console_out, std::istream& console_in) : os(console_out),
+                                                                   is(console_in) {};
 };
 
 

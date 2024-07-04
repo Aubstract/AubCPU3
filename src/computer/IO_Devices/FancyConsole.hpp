@@ -24,10 +24,9 @@ private:
     void ReadActive(size_t addr) override;
     void WriteActive(size_t addr) override;
 public:
-    FancyConsole(uint8_t base_addr, std::ostream& console_out, std::istream& console_in) : IODevice(base_addr),
-                                                                                           op(UINT),
-                                                                                           os(console_out),
-                                                                                           is(console_in) {};
+    FancyConsole(std::ostream& console_out, std::istream& console_in) : op(UINT),
+                                                                        os(console_out),
+                                                                        is(console_in) {};
 };
 
 
