@@ -1,6 +1,7 @@
 // Created by Aubrey on 7/3/2024
 // FizzBuzz Program
 
+link "library/print_word.txt"
 link "library/console.txt"
 link "library/modulo.txt"
 
@@ -11,9 +12,8 @@ ascii_B: 66
 ascii_u: 117
 ascii_eol: 10
 
-fizz_ptr: 16                                    // addr of "Fizz" string
-buzz_ptr: 20                                    // addr of "Buzz" string
-
+fizz_ptr: 16                                    // addr of "Fizz" string in RAM
+buzz_ptr: 20                                    // addr of "Buzz" string in RAM
 
 max_count: 100
 fizz_mod: 3
@@ -162,63 +162,3 @@ main:
 
     exit_fb_loop:
         lod pc_reg, stack_ptr_reg               // return to caller
-        
-print_word:
-    // Notes:
-    // Prints a word to the console. It takes a ptr to the start of the word,
-    // and the length of the word as arguments.
-    //
-    // Arguments:
-    // arg_a_reg = word_ptr
-    // arg_b_reg = word_len
-    //
-    // Stack:
-    // ret_addr <- stack_ptr_reg
-
-    // Save x5, x6, x7, x8
-    dec stack_ptr_reg                           // make room on stack
-    sto x5, stack_ptr_reg                       // push x5
-    dec stack_ptr_reg                           // make room on stack
-    sto x6, stack_ptr_reg                       // push x6
-    dec stack_ptr_reg                           // make room on stack
-    sto x7, stack_ptr_reg                       // push x7
-    dec stack_ptr_reg                           // make room on stack
-    sto x8, stack_ptr_reg                       // push x8
-
-    cpr x5, arg_a_reg                           // x5 = word_ptr
-    cpr x6, arg_b_reg                           // x6 = word_len
-    ldi x7, 0                                   // Initialize counter
-    ldi x8, (ret_print_char 1 -)                // Load inner return addr (saves ops to load it here)
-
-    print_loop:
-        cmp x7, x6                              // compare counter to word_len
-        jin continue_print_loop                 // if not equal, continue loop
-        ldi pc_reg, (exit_print_loop 1 -)       // else exit the loop
-
-        continue_print_loop:
-        lod arg_a_reg, x5                       // load char of word into arg_a
-        ldi arg_b_reg, console_char_mode_opcode // load console mode into arg_b
-        dec stack_ptr_reg                       // make room on stack
-        sto x8, stack_ptr_reg                   // push return addr
-        ldi pc_reg, (print 1 -)                 // jump to print subroutine
-
-        ret_print_char:
-        inc stack_ptr_reg                       // deallocate return addr
-        inc x5                                  // increment word_ptr
-        inc x7                                  // increment counter
-        ldi pc_reg, (print_loop 1 -)            // loop
-    
-    exit_print_loop:
-
-    // Restore x8, x7, x6, x5
-    lod x8, stack_ptr_reg                       // pop x8
-    inc stack_ptr_reg                           // deallocate room on stack
-    lod x7, stack_ptr_reg                       // pop x7
-    inc stack_ptr_reg                           // deallocate room on stack
-    lod x6, stack_ptr_reg                       // pop x6
-    inc stack_ptr_reg                           // deallocate room on stack
-    lod x5, stack_ptr_reg                       // pop x5
-    inc stack_ptr_reg                           // deallocate room on stack
-    
-    // Return to caller
-    lod pc_reg, stack_ptr_reg

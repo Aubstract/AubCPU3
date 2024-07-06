@@ -1,10 +1,13 @@
 // Created by Aubrey on 7/2/2024
-// Division algorithm for the Standard Library
+// Division Subroutine for the Standard Library
 
 divide:
     // Notes:
     // In the case of a divide by zero, this subroutine
-    // returns 0
+    // returns 0.
+    // Also, the modulo (num_a % num_b) is stored
+    // in arg_a_reg after the subroutine ends, so it is kind of a
+    // divmod subroutine.
     //
     // Arguments:
     // arg_a_reg = num_a

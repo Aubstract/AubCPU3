@@ -4,6 +4,9 @@
 src/computer/log/log_files/*
 src/assembler/bin_files/*
 
+# Just to keep the log_files directory itself:
+!src/computer/log/log_files/.gitkeep
+
 #=======================================================
 # Python is below
 #=======================================================

@@ -117,7 +117,7 @@ def check_opcodes_and_operands(program: list[object]) -> None:
 
 def check_link_statements(program: list[str]) -> None:
     for line in program:
-        if "link" in line:
+        if line.startswith("link"):
             tokens = line.split()
             if len(tokens) != 2:
                 throw_error(f"Invalid number of tokens in link statement:\n"

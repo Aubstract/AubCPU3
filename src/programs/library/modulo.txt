@@ -1,5 +1,5 @@
 // Created by Aubrey on 6/20/2024
-// Modulo algorithm for the Standard Library
+// Modulo Subroutine for the Standard Library
 
 modulo:
     // Arguments:

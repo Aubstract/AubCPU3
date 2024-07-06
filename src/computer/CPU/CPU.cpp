@@ -380,7 +380,7 @@ void CPU::Step()
         print_header(log);
     }
     format_log(log);
-    log << int(cycles + 1);
+    log << int(cycles + 1) << " ";
 #endif
     DecodeAndExecute(instruction);
     cycles++;

@@ -5,7 +5,7 @@
 #ifndef SOFTCPU2_MEMORY_HPP
 #define SOFTCPU2_MEMORY_HPP
 
-#include "Register.hpp"
+//#include "Register.hpp"
 #include <array>
 #include <cstdint>
 #ifndef NDEBUG
@@ -16,7 +16,7 @@ template<typename T, size_t N>
 class Memory
 {
 protected:
-    std::array<Register<T>, N> registers;
+    std::array<T, N> registers;
 public:
     virtual T Read(size_t addr) const
     {
@@ -26,7 +26,7 @@ public:
             throw std::out_of_range("Index out of range in Memory.Read()");
         }
 #endif
-        return registers[addr].read();
+        return registers[addr];
     }
 
     virtual void Write(size_t addr, T data)
@@ -37,7 +37,7 @@ public:
             throw std::out_of_range("Index out of range in Memory.Write()");
         }
 #endif
-        registers[addr].write(data);
+        registers[addr] = data;
     }
 
     virtual void Clear()

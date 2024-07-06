@@ -88,4 +88,4 @@ main:
         ldi pc_reg, (fib_loop 1 -)              // GOTO fib_loop
 
     exit_loop:
-        lod pc_reg, stack_ptr_reg               // if carry is set, end program
+        lod pc_reg, stack_ptr_reg               // return to caller

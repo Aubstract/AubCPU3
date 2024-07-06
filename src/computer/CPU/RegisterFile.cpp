@@ -8,7 +8,13 @@ void RegisterFile::Write(size_t addr, uint8_t data)
 {
     if (addr != HARDWIRE_ZERO_ADDR)
     {
-        this->registers.at(addr).write(data);
+#ifndef NDEBUG
+        if (addr >= registers.size())
+        {
+            throw std::out_of_range("Index out of range in RegisterFile.Write()");
+        }
+#endif
+        this->registers[addr] = data;
     }
 }
 
@@ -60,23 +66,27 @@ void RegisterFile::UpdateFlags(uint16_t alu_out, uint8_t alu_in_a, uint8_t alu_i
 
 void RegisterFile::ClearFlags()
 {
-    this->registers.at(FLAG_REG_ADDR).write(0);
+#ifndef NDEBUG
+    assert(FLAG_REG_ADDR < registers.size());
+#endif
+    this->registers[FLAG_REG_ADDR] = 0;
 }
 
 bool RegisterFile::TestFlag(FlagAddr addr) const
 {
 #ifndef NDEBUG
-    assert(addr <= FLAG_ADDR_MAX);
+    assert(FLAG_REG_ADDR < registers.size());
 #endif
-    return this->registers.at(FLAG_REG_ADDR).read() & (uint8_t(1) << addr);
+    return this->registers[FLAG_REG_ADDR] & (uint8_t(1) << addr);
 }
 
 void RegisterFile::SetFlag(FlagAddr addr)
 {
 #ifndef NDEBUG
     assert(addr <= FLAG_ADDR_MAX);
+    assert(FLAG_REG_ADDR < registers.size());
 #endif
-    this->registers.at(FLAG_REG_ADDR).write(this->registers.at(FLAG_REG_ADDR).read() | (uint8_t(1) << addr));
+    this->registers[FLAG_REG_ADDR] = this->registers[FLAG_REG_ADDR] | (uint8_t(1) << addr);
 }
 
 #ifndef NDEBUG

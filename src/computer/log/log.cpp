@@ -11,7 +11,7 @@ void format_log(std::ostream& log)
 
 void print_header(std::ostream& log)
 {
-    std::string header[] = {"Cyc", "Op", "A", "B", "Registers"};
+    std::string header[] = {"Cyc  ", "Op", "A", "B", "Registers"};
 
     for (const std::string& str : header)
     {
