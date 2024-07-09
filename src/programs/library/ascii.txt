@@ -1,0 +1,108 @@
+// Created by Aubrey on 7/8/2024
+// ASCII Definitions for the Standard Library
+
+ascii_backspace: 8
+ascii_newline: 10
+ascii_space: 32
+
+ascii_!: 33
+ascii_": 34
+ascii_#: 35
+ascii_$: 36
+ascii_%: 37
+ascii_&: 38
+ascii_': 39
+ascii_(: 40
+ascii_): 41
+ascii_*: 42
+ascii_+: 43
+ascii_,: 44
+ascii_-: 45
+ascii_.: 46
+ascii_/: 47
+
+ascii_0: 48
+ascii_1: 49
+ascii_2: 50
+ascii_3: 51
+ascii_4: 52
+ascii_5: 53
+ascii_6: 54
+ascii_7: 55
+ascii_8: 56
+ascii_9: 57
+
+ascii_colon: 58
+ascii_;: 59
+ascii_<: 60
+ascii_=: 61
+ascii_>: 62
+ascii_?: 63
+ascii_@: 64
+
+ascii_A: 65
+ascii_B: 66
+ascii_C: 67
+ascii_D: 68
+ascii_E: 69
+ascii_F: 70
+ascii_G: 71
+ascii_H: 72
+ascii_I: 73
+ascii_J: 74
+ascii_K: 75
+ascii_L: 76
+ascii_M: 77
+ascii_N: 78
+ascii_O: 79
+ascii_P: 80
+ascii_Q: 81
+ascii_R: 82
+ascii_S: 83
+ascii_T: 84
+ascii_U: 85
+ascii_V: 86
+ascii_W: 87
+ascii_X: 88
+ascii_Y: 89
+ascii_Z: 90
+
+ascii_[: 91
+ascii_\: 92
+ascii_]: 93
+ascii_^: 94
+ascii__: 95
+ascii_`: 96
+
+ascii_a: 97
+ascii_b: 98
+ascii_c: 99
+ascii_d: 100
+ascii_e: 101
+ascii_f: 102
+ascii_g: 103
+ascii_h: 104
+ascii_i: 105
+ascii_j: 106
+ascii_k: 107
+ascii_l: 108
+ascii_m: 109
+ascii_n: 110
+ascii_o: 111
+ascii_p: 112
+ascii_q: 113
+ascii_r: 114
+ascii_s: 115
+ascii_t: 116
+ascii_u: 117
+ascii_v: 118
+ascii_w: 119
+ascii_x: 120
+ascii_y: 121
+ascii_z: 122
+
+ascii_{: 123
+ascii_|: 124
+ascii_}: 125
+ascii_~: 126
+ascii_delete: 127

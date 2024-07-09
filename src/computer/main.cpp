@@ -28,7 +28,7 @@ int main()
 
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-    std::cout << duration.count() << std::endl;
+    std::cout << "\n\n Microseconds:\n" << duration.count() << std::endl;
 
     return 0;
 }

@@ -1,6 +1,8 @@
 // Created by Aubrey on 7/2/2024
 // Division Subroutine for the Standard Library
 
+sign_bit_flag: 8                        // 00001000
+
 divide:
     // Notes:
     // In the case of a divide by zero, this subroutine
@@ -18,9 +20,7 @@ divide:
     //
     // Return Value:
     // num_a / num_b
-    //
-    // Definitions:
-    sign_bit_flag: 8                    // 00001000
+
     ldi return_reg, 0                   // Default quotient is 0
 
     // Check for divide by zero case

@@ -1,0 +1,47 @@
+// Created by Aubrey on 7/5/2024
+// Barrel Left Shift by N Subroutine for the Standard Library
+
+// TODO: Test this subroutine
+
+blsh_n_sign_bit_mask: 128
+
+blsh_n:
+    // Notes:
+    //
+    // Arguments:
+    // arg_a_reg = num
+    // arg_b_reg = n_shift
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+    //
+    // Return Value:
+    // num << n_shift
+
+    // if n_shift != 0, then enter loop, else early return
+    cmp x0, arg_b_reg                           // compare n_shift to 0
+    jin blsh_loop                               // if not equal, jump to blsh_loop
+    ldi pc_reg (blsh_n_exit_loop 1 -)           // else jump to exit_blsh_loop
+
+    blsh_n_loop:
+        dec arg_b_reg                           // decrement counter
+
+        ldi arg_c_reg, blsh_n_sign_bit_mask     // load sign bit mask
+        and arg_c_reg, arg_a_reg                // test the shift out value prior to shift
+
+        lsh arg_a_reg                           // shift num
+
+        orr x0, arg_c_reg                       // update the flags based on shift out value
+        jin blsh_n_shift_in                     // if shift out value != 0, jump to shift_in
+
+        blsh_n_ret_shift_in:
+        cmp x0, arg_b_reg                       // check n_shift against 0
+        jin blsh_n_loop                         // if n_shift != 0, loop again,
+                                                // else fall through to exit_blsh_loop
+    blsh_n_exit_loop:
+        cpr return_reg, arg_a_reg               // copy shifted num to return reg
+        lod pc_reg, stack_ptr_reg               // return to caller
+
+    blsh_n_shift_in:
+        inc arg_a_reg                           // same thing as shift in during lsh
+        ldi pc_reg, (blsh_n_ret_shift_in 1 -)   // jump back into the loop

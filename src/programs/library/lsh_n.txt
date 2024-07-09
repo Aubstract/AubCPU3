@@ -1,0 +1,30 @@
+// Created by Aubrey on 7/5/2024
+// Left Shift by N Subroutine for the Standard Library
+
+lsh_n:
+    // Notes:
+    //
+    // Arguments:
+    // arg_a_reg = num
+    // arg_b_reg = n_shift
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+    //
+    // Return Value:
+    // num << n_shift
+
+    // if n_shift != 0, then enter loop, else early return
+    cmp x0, arg_b_reg                           // compare n_shift to 0
+    jin lsh_loop                                // if not equal, jump to lsh_loop
+    ldi pc_reg (exit_lsh_loop 1 -)              // else jump to exit_lsh_loop
+
+    lsh_loop:
+        dec arg_b_reg                           // decrement counter
+        lsh arg_a_reg                           // shift num
+        cmp x0, arg_b_reg                       // check n_shift against 0
+        jin lsh_loop                            // if n_shift != 0, loop again,
+                                                // else fall through to exit_lsh_loop
+    exit_lsh_loop:
+        cpr return_reg, arg_a_reg               // copy shifted num to return reg
+        lod pc_reg, stack_ptr_reg               // return to caller

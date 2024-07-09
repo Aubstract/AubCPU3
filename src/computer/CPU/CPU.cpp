@@ -230,7 +230,7 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             reg_file.Write(args.at(0), alu_out);
             // Update flags
-            reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            reg_file.UpdateFlags(alu_out, args.at(0), 0);
             // Increment PC
             reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
@@ -244,7 +244,7 @@ void CPU::DecodeAndExecute(uint16_t instr)
             // Write back
             reg_file.Write(args.at(0), alu_out);
             // Update flags
-            reg_file.UpdateFlags(alu_out, args.at(0), args.at(1));
+            reg_file.UpdateFlags(alu_out, args.at(0), 0);
             // Increment PC
             reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
