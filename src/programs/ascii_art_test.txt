@@ -1,0 +1,64 @@
+// Created by Aubrey on 7/19/2024
+// Ascii Art Test
+
+link "library/console.txt"
+link "library/ascii.txt"
+
+// Gradient:
+light_lvl_0: ascii_space 0 +
+light_lvl_1: ascii_. 0 +
+light_lvl_2: ascii_- 0 +
+light_lvl_3: ascii_colon 0 +
+light_lvl_4: ascii_i 0 +
+light_lvl_5: ascii_U 0 +
+light_lvl_6: ascii_# 0 +
+light_lvl_7: ascii_$ 0 +
+
+gradient_ptr: 16
+
+entry:
+    dec stack_ptr_reg                           // make room on stack
+    ldi x5, (end_prog 1 -)                      // load return addr
+    sto x5, stack_ptr_reg                       // push return addr
+    ldi pc_reg, (main 1 -)                      // jump to main
+    end_prog:
+        inc stack_ptr_reg                       // deallocate return addr
+        hlt                                     // end program
+
+main:
+    // Load Gradient into RAM
+    ldi x5, gradient_ptr
+
+    ldi x6, light_lvl_0
+    sto x6, x5
+    inc x5
+
+    ldi x6, light_lvl_1
+    sto x6, x5
+    inc x5
+
+    ldi x6, light_lvl_2
+    sto x6, x5
+    inc x5
+
+    ldi x6, light_lvl_3
+    sto x6, x5
+    inc x5
+
+    ldi x6, light_lvl_4
+    sto x6, x5
+    inc x5
+
+    ldi x6, light_lvl_5
+    sto x6, x5
+    inc x5
+
+    ldi x6, light_lvl_6
+    sto x6, x5
+    inc x5
+
+    ldi x6, light_lvl_7
+    sto x6, x5
+
+    ldi x5, 0                                   // initialize counter
+

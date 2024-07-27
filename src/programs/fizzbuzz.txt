@@ -1,16 +1,9 @@
 // Created by Aubrey on 7/3/2024
 // FizzBuzz Program
 
-link "library/print_word.txt"
-link "library/console.txt"
 link "library/modulo.txt"
-
-ascii_F: 70
-ascii_i: 105
-ascii_z: 122
-ascii_B: 66
-ascii_u: 117
-ascii_eol: 10
+link "library/ascii.txt"
+link "library/print_word.txt"
 
 fizz_ptr: 16                                    // addr of "Fizz" string in RAM
 buzz_ptr: 20                                    // addr of "Buzz" string in RAM
@@ -142,7 +135,7 @@ main:
         skip_counter:
 
         // Print newline character
-        ldi arg_a_reg, ascii_eol                // load End of Line char into arg_a
+        ldi arg_a_reg, ascii_newline            // load End of Line char into arg_a
         ldi arg_b_reg, console_char_mode_opcode // load console char opcode into arg_b
         dec stack_ptr_reg                       // make room on stack
         ldi x9, (ret_print_eol 1 -)             // load return addr

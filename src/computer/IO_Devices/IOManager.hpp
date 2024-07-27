@@ -6,7 +6,6 @@
 #define SOFTCPU2_IOMANAGER_HPP
 
 #include "FancyConsole.hpp"
-#include "Console.hpp"
 #include "../CPU/Memory.hpp"
 #include <cstdint>
 #include <iostream>
