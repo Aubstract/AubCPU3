@@ -63,12 +63,12 @@ def write_schem_file(path: str, file_name: str, program: list[int]) -> None:
     origin_y = -2
     origin_z = 1
 
-    if len(program) % 2 != 0:
-        program.append(0)
+    if len(program) != 256:
+        program.extend([0] * (256 - len(program)))
 
     for index, (instr1, instr2) in enumerate(zip(program[::2], program[1::2])):
         # index starts at 0 and counts up by 1
-        coord_x = origin_x + ((index // 8) * 2) + ((index // 16) % 2)
+        coord_x = origin_x + ((index // 8) * 2) + (index // 16)
         coord_y = origin_y + (index // 16) % 2
         coord_z = origin_z + (index % 8) * 2
 
@@ -107,10 +107,6 @@ def main():
     parser.add_argument("-schem", "--schematic", action="store_true", help="output a schematic file")
     parser.add_argument("-odir", "--outputDirPath", help="Path to the output directory")
     args = parser.parse_args()
-
-    #if args.source:
-    #    dicts.src_file_path = args.source
-    #else:
 
     dicts.src_file_path = get_file_path()
 
