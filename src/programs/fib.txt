@@ -34,14 +34,14 @@ main:
         inc stack_ptr_reg                       // deallocate return addr
 
     // Print space character
-    dec stack_ptr_reg                       // make room on stack
-    ldi arg_a_reg, (ret_first_space 1 -)    // load return addr
-    sto arg_a_reg, stack_ptr_reg            // push return addr
-    ldi arg_a_reg, ascii_space              // copy term to arg_a
-    ldi arg_b_reg, console_char_mode_opcode // load console mode into arg_b
-    ldi pc_reg, (print 1 -)                 // call print subroutine
+    dec stack_ptr_reg                           // make room on stack
+    ldi arg_a_reg, (ret_first_space 1 -)        // load return addr
+    sto arg_a_reg, stack_ptr_reg                // push return addr
+    ldi arg_a_reg, ascii_space                  // copy term to arg_a
+    ldi arg_b_reg, console_char_mode_opcode     // load console mode into arg_b
+    ldi pc_reg, (print 1 -)                     // call print subroutine
     ret_first_space:
-        inc stack_ptr_reg                   // deallocate return addr
+        inc stack_ptr_reg                       // deallocate return addr
 
     // print second term
     dec stack_ptr_reg                           // make room on stack

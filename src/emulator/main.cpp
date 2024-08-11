@@ -7,7 +7,7 @@
 
 int main()
 {
-    std::ofstream log("../src/computer/log/log_files/log.txt");
+    std::ofstream log("../src/emulator/log/log_files/log.txt");
     assert(log);
 
     CPU cpu(log, std::cout, std::cin);

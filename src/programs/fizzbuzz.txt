@@ -16,11 +16,6 @@ buzz_len: 4
 zero_flag_bitmask: 1
 
 entry:
-    // DEBUG
-    // ldi arg_b_reg, console_char_mode_opcode
-    // ldi arg_c_reg, console_opcode_addr
-    // sto arg_b_reg, arg_c_reg
-
     dec stack_ptr_reg                           // make room on stack
     ldi x5, (end_prog 1 -)                      // load return addr
     sto x5, stack_ptr_reg                       // push return addr

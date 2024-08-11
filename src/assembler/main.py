@@ -114,6 +114,9 @@ def main():
     program = link.link(program)
     program = pre.preprocess(program)
     program = assemble.assemble(program)
+
+    # Post process
+    post.postprocess(program)
     
     # Build output file path
     file_name = dicts.src_file_path.split("\\")[-1]
@@ -124,10 +127,7 @@ def main():
         write_bin_file(args.outputDirPath + file_name, program)
     elif args.schematic:
         write_schem_file(args.outputDirPath, file_name, program)
-    
-    # Post process
-    post.postprocess(program)
-    
+
 
 if __name__ == "__main__":
     main()

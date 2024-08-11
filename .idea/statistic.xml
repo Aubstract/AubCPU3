@@ -8,7 +8,7 @@
         <option value="$PROJECT_DIR$/cmake-build-debug" />
         <option value="$PROJECT_DIR$/cmake-build-release" />
         <option value="$PROJECT_DIR$/venv" />
-        <option value="$PROJECT_DIR$/src/computer/log/log_files" />
+        <option value="$PROJECT_DIR$/src/emulator/log/log_files" />
       </list>
     </option>
   </component>

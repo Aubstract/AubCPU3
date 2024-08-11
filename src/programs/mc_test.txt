@@ -1,0 +1,5 @@
+// Test program for the Minecraft computer
+
+ldi x5, 3
+dec x5
+hlt
