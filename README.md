@@ -73,11 +73,38 @@ serves as an I/O device that interfaces with the standard console as a simple wa
 In the Minecraft computer, I am building an in-game display that mimics the behavior of the standard console in order
 to keep the interface the same.
 
+## Assembler:
+
+One thing I'm proud of is the fact that the assembler has a recursive linker, which allows you to link multiple source
+files together using the "link" statement. This enables the creation of a "standard library" of subroutines.
+
+The assembler can target two types of files as output: `.bin`, and `.schem`. The binary files are for the emulator, and the
+schematic files are for the Minecraft computer.
+
+The entry point of the assembler is `main.py`. When you run the assembler, you have to pass it some command line arguments:
+- -bin or --binary tells the assembler to target a `.bin` file
+- -schem or --schematic tells the assembler to target a `.schem` file
+- -odir or --outputDirPath tells the assembler the path of the directory you want the output to be written to
+
+Once it is running it will prompt the user for the path to the source file
+
+## Emulator:
+
+The entry point of the emulator is `main.cpp`. After the emulator is running it will prompt the user for a path to a
+`.bin` file.
+
+First the emulator will load the program from the `.bin` file as an array of 16-bit unsigned integers. Then it will "step"
+through the program one instruction at a time. Each step of the emulator includes a fetch and execute stage (which is
+the same for the Minecraft CPU).
+
 ## Minecraft:
 
 Building a CPU in Minecraft is roughly equivalent to building a CPU from the transistor level up, or at least from the
 logic gate up. There are no "out of the box" mass-memory components or anything like that, it all has to be built from
 logic gates.
+
+One thing I'm proud of is that the Minecraft CPU is pipelined. It only has 2 stages (fetch, execute) but by implementing
+a pipeline it sped up the clock speed significantly.
 
 **Here are some renders of the AubCPU3 in Minecraft (WIP):**
 
