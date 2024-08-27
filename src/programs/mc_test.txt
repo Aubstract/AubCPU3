@@ -1,5 +1,10 @@
 // Test program for the Minecraft computer
 
+start:
 ldi x5, 3
-dec x5
+add x0, x5
+jin (end 1 -)
+ldi pc_reg, 255
+
+end:
 hlt
