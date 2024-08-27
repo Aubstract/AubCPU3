@@ -231,7 +231,7 @@ cython_debug/
 .idea/dataSources.local.xml
 .idea/statistics.xml
 
-.idea/*
+.idea
 
 # User-specific stuff
 .idea/**/workspace.xml
