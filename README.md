@@ -50,6 +50,10 @@ from the AND operation. Which means that if the operation returned a non-zero va
 then the not-zero flag would now be set at the end of the clock cycle.
    4. do the jump if not zero
 
+Another small trick is the omission of a bitwise NOT operation. I decided not to include one because you can accomplish
+a bitwise NOT of a value if you instead XOR it with the value 0xFF (for 8-bit data). So what would have been one instruction
+(a bitwise NOT) is now two (a load immediate of 0xFF, and an XOR).
+
 ### Caller-Callee agreement:
 - The first three arguments of a subroutine will be stored in x2 through x4
 - Any additional arguments will be pushed onto the stack
