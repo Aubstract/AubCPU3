@@ -1,14 +1,15 @@
 import dictionaries as dicts
 
 
-def replace_opcodes(program: list[object]):
-    for line_object in program:
-        tokens = line_object.line.split()
-        tokens[0] = dicts.opcodes[tokens[0]]
-        line_object.line = ' '.join(tokens)
+#def replace_opcodes(program: list[object]):
+#    for line_object in program:
+#        tokens = line_object.line.split()
+#        tokens[0] = dicts.opcodes[tokens[0]]
+#        line_object.line = ' '.join(tokens)
 
 
 def construct_binary_list(program: list[object]) -> list[int]:
+    """Constructs a list of numeric/binary values from the opcodes and operands"""
     bin_program = []
 
     for line_object in program:

@@ -5,6 +5,7 @@
 #ifndef SOFTCPU2_OPCODE_HPP
 #define SOFTCPU2_OPCODE_HPP
 
+// A definition of all the opcodes for the CPU
 enum Opcode
 {
     HLT = 0,

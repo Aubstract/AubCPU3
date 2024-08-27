@@ -9,6 +9,7 @@ inline constexpr uint16_t ARG_A_BITMASK = 0x00F0;
 inline constexpr uint16_t ARG_B_BITMASK = 0x0F00;
 inline constexpr uint16_t UPPER_BYTE_BITMASK = 0xFF00;
 
+// Constructor just initializes the CPU class's members
 CPU::CPU(std::ofstream& log_file,
          std::ostream& console_out,
          std::istream& console_in)
@@ -21,6 +22,8 @@ uint16_t CPU::Fetch(uint8_t PC)
     return prog_mem.Read(PC);
 }
 
+// The "decode_pattern_X" functions represent how the instruction decoder in the CPU
+// would select where to grab the operands for different instructions
 void decode_pattern_a(std::vector<uint8_t>& args, uint16_t instr)
 {
     // Extract and push argument A (Src1/Dest)
@@ -129,6 +132,7 @@ void CPU::DecodeAndExecute(uint16_t instr)
             }
             // No write back apart from updating the PC during execute phase
             // Don't update flags
+            // TODO: Change this to increment PC in order to match behavior of Minecraft CPU
             // Don't increment PC again
             break;
 
@@ -370,8 +374,10 @@ void CPU::Run(int64_t num_cycles)
 void CPU::Step()
 {
     uint16_t instruction = Fetch(reg_file.Read(PROG_CNTR_ADDR));
+    DecodeAndExecute(instruction);
+    cycles++;
 #ifndef NDEBUG
-    if (cycles % 50 == 0)
+    if ((cycles - 1) % 50 == 0)
     {
         if (cycles != 0)
         {
@@ -380,11 +386,7 @@ void CPU::Step()
         print_header(log);
     }
     format_log(log);
-    log << int(cycles + 1) << " ";
-#endif
-    DecodeAndExecute(instruction);
-    cycles++;
-#ifndef NDEBUG
+    log << int(cycles) << " ";
     reg_file.Print(log);
     log << std::endl;
 #endif
@@ -414,6 +416,7 @@ void CPU::LoadProgram(std::ifstream& input_file)
         uint16_t instr_word = (uint16_t(byte2) << 8) | byte1;
         size_t write_addr = (int(input_file.tellg()) / 2) - 1;
 
+        // Write to program memory
         prog_mem.Write(write_addr, instr_word);
 
         // Check if read address is greater than the size of the CPU's program memory

@@ -10,7 +10,6 @@ add_executable(SoftCPU2
         src/emulator/CPU/Opcode.hpp
         src/emulator/CPU/ALU.hpp
         src/emulator/CPU/ALU.cpp
-        src/emulator/CPU/Register.hpp
         src/emulator/CPU/CPU.hpp
         src/emulator/CPU/CPU.cpp
         src/emulator/CPU/Memory.hpp

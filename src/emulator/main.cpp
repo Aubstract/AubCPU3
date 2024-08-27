@@ -7,6 +7,7 @@
 
 int main()
 {
+    // Init the log file
     std::ofstream log("../src/emulator/log/log_files/log.txt");
     assert(log);
 
@@ -16,6 +17,7 @@ int main()
     std::cout << "Enter the file path to the binary file: " << std::flush;
     std::cin >> path;
 
+    // Get the source file (binary)
     std::ifstream bin(path, std::ios::binary | std::ios::in);
     assert(bin);
 
@@ -24,6 +26,7 @@ int main()
     // Time the execution
     auto start = std::chrono::high_resolution_clock::now();
 
+    // Run the CPU (-1 means indefinitely)
     cpu.Run(-1);
 
     auto end = std::chrono::high_resolution_clock::now();

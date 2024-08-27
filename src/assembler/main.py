@@ -12,7 +12,6 @@ import postprocess as post
 
 def get_file_path() -> str:
     """Prompts user for a file path"""
-
     file_path = input("\nEnter the path to the source file: ")
 
     if file_path.startswith('"') and file_path.endswith('"'):
@@ -22,6 +21,7 @@ def get_file_path() -> str:
 
 
 def load_program(file_path: str) -> list[str]:
+    """Reads the source file into a string"""
     program = []
     with open(file_path) as f:
         program = f.readlines()
@@ -29,6 +29,7 @@ def load_program(file_path: str) -> list[str]:
 
 
 def write_bin_file(path: str, program: list[int]) -> None:
+    """Writes the binary instruction list to a file"""
     with open(f"{path}.bin", "wb") as f:
         for value in program:
             # Convert integer to 2-byte bytearray with little-endian byte order
@@ -37,6 +38,7 @@ def write_bin_file(path: str, program: list[int]) -> None:
 
 
 def generate_signal_strengths(lower_byte1, upper_byte1, lower_byte2, upper_byte2) -> list[int]:
+    """Takes 4 bytes and converts them to the corresponding set of 8 signal strength values for the barrels"""
     bitmask = 0x80
     return_list = []
     for index in range(7, -1, -1):
@@ -56,6 +58,9 @@ def generate_signal_strengths(lower_byte1, upper_byte1, lower_byte2, upper_byte2
 
 
 def write_schem_file(path: str, file_name: str, program: list[int]) -> None:
+    """Constructs a .schem file out of the binary instruction list.\n
+    - program is a list of 16-bit integers"""
+
     schem = mcschem.MCSchematic()
 
     # Offset of schem origin from player's feet
@@ -63,6 +68,7 @@ def write_schem_file(path: str, file_name: str, program: list[int]) -> None:
     origin_y = -2
     origin_z = 1
 
+    # Make sure that the program is always 256 instructions long (fills empty space with "halt" instructions)
     if len(program) != 256:
         program.extend([0] * (256 - len(program)))
 
@@ -109,11 +115,15 @@ def main():
     args = parser.parse_args()
     args.outputDirPath = args.outputDirPath.replace('"', '')
 
+    # Get source file
     dicts.src_file_path = get_file_path()
-
     program = load_program(dicts.src_file_path)
+
+    # Pre-process
     program = link.link(program)
     program = pre.preprocess(program)
+
+    # Assemble
     program = assemble.assemble(program)
 
     # Post process
@@ -123,7 +133,7 @@ def main():
     file_name = dicts.src_file_path.split("\\")[-1]
     file_name = file_name[:file_name.index('.')]
 
-    # Write to binary file
+    # Write to output file (bin or schem depending on cmdline args)
     if args.binary:
         write_bin_file(args.outputDirPath + "\\" + file_name, program)
     elif args.schematic:

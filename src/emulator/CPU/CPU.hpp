@@ -22,6 +22,9 @@
 
 constexpr size_t PROG_MEM_SIZE = 256;
 
+// This class represents the entire CPU.
+// It is composed of a number of other classes, each representing a piece of the CPU.
+// It exposes functions like Run and Step that allow the user to run a program on it.
 class CPU
 {
 private:

@@ -9,6 +9,7 @@ def read_file(file_path: str) -> list[str]:
 
 
 def get_path_to_parent_dir(path: str) -> str:
+    """Removes the file name from a file path, returning just the path to its parent dir"""
     path = path[::-1]  # reverse the path
     path = path[path.index('\\'):]  # remove the filename
     path = path[::-1]  # reverse again back to normal
@@ -16,9 +17,13 @@ def get_path_to_parent_dir(path: str) -> str:
 
 
 def append_linked_files(program: list[str], src_path: str) -> list[str]:
+    """Recursively searches for and links source files"""
+    # Ensure link statements have proper syntax
     err.check_link_statements(program)
+
     linked_progs = []
     parent_dir_path = get_path_to_parent_dir(src_path)
+
     for prog_line in program:
         if prog_line.startswith("link "):
             link_path = prog_line.removeprefix("link ")
@@ -26,10 +31,11 @@ def append_linked_files(program: list[str], src_path: str) -> list[str]:
             link_path = link_path.replace('\n', '')
             link_path = link_path.replace('/', '\\')
             link_path = parent_dir_path + link_path
-            if link_path not in dicts.link_files:
+            if link_path not in dicts.link_files:  # Recursive condition
                 dicts.link_files.append(link_path)
                 linked_progs.extend(read_file(link_path))
-                linked_progs.extend(append_linked_files(linked_progs, link_path))
+                linked_progs.extend(append_linked_files(linked_progs, link_path))  # Recursive call
+            # else return
     return linked_progs
 
 

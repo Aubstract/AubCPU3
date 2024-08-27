@@ -4,7 +4,7 @@ import dictionaries as dicts
 
 def print_dict(dict_name: str, dictionary: dict) -> None:
     print(dict_name + ':')
-    for key, value in dicts.jump_labels.items():
+    for key, value in dictionary.items():
         print('\t' + key + ": " + value)
     print()
 

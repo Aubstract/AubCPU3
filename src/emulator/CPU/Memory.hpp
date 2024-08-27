@@ -5,13 +5,14 @@
 #ifndef SOFTCPU2_MEMORY_HPP
 #define SOFTCPU2_MEMORY_HPP
 
-//#include "Register.hpp"
 #include <array>
 #include <cstdint>
 #ifndef NDEBUG
     #include <stdexcept>
 #endif
 
+// Memory is a template class that represents an array of type T registers, and exposes Read and Write functions
+// It is used to represent main memory in the CPU for example.
 template<typename T, size_t N>
 class Memory
 {

@@ -8,6 +8,10 @@
 #include "Opcode.hpp"
 #include <cstdint>
 
+// This class represents the ALU. It's really just a collection of functions, since the ALU doesn't
+// have any state/memory.
+//
+// This maybe could have been a bunch of freestanding functions in a separate namespace or something
 class ALU
 {
 private:

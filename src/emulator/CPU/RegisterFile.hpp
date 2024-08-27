@@ -15,6 +15,7 @@
 #include <cassert>
 #include <iostream>
 
+// Defines the bit index for each flag
 enum FlagAddr
 {
     zero = 0,
@@ -26,12 +27,16 @@ enum FlagAddr
     FLAG_ADDR_MAX = signed_less_than
 };
 
+// Defines addresses for the special registers
 inline constexpr uint8_t HARDWIRE_ZERO_ADDR = 0;
 inline constexpr uint8_t FLAG_REG_ADDR = 13;
 inline constexpr uint8_t STACK_PTR_ADDR = 14;
 inline constexpr uint8_t PROG_CNTR_ADDR = 15;
 inline constexpr size_t REG_FILE_SIZE = 16;
 
+// The RegisterFile class represents all the registers of the computer that can be used as an operand in instructions.
+// Since some of those registers are a little irregular in their meaning/behavior (flag register, program counter),
+// this class ends up being a little messy.
 class RegisterFile : public Memory<uint8_t, REG_FILE_SIZE>
 {
 private:

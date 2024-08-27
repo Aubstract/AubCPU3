@@ -22,7 +22,6 @@ uint8_t IOManager::Read(size_t addr)
             throw std::out_of_range("Invalid read address in IOManager::Read()");
         }
     }
-
     return data_mem.Read(addr - IO_ADDR_SPACE_SIZE);
 }
 
