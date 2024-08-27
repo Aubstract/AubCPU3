@@ -68,7 +68,7 @@ In the AubCPU3, I/O is memory-mapped to the lower 16 addresses of main memory. H
 either output or input, but not both.
 
 In the emulator, I wrote a class called "FancyConsole" (a development from a previous class I had named Console) which
-served as an I/O device that interfaced with the standard console as a simple way to output values.
+serves as an I/O device that interfaces with the standard console as a simple way to output values.
 
 In the Minecraft computer, I am building an in-game display that mimics the behavior of the standard console in order
 to keep the interface the same.
@@ -79,14 +79,14 @@ Building a CPU in Minecraft is roughly equivalent to building a CPU from the tra
 logic gate up. There are no "out of the box" mass-memory components or anything like that, it all has to be built from
 logic gates.
 
-**Here are some renders of the AubCPU3 in Minecraft as of 2024/08/26:**
+**Here are some renders of the AubCPU3 in Minecraft (WIP):**
 
 **Legend:**
+- Orange - ALU
+- Yellow - Registers
 - Lime green - Main memory
 - Pinkish/Magenta - Program memory
-- Yellow - Registers
 - Red - Program counter
-- Orange - ALU
 - Dark gray - Control logic
 - Light blue - Data bus
 - Dark blue - Address bus
