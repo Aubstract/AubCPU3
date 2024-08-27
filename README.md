@@ -57,6 +57,7 @@ a bitwise NOT of a value if you instead XOR it with the value 0xFF (for 8-bit da
 ### Caller-Callee agreement:
 - The first three arguments of a subroutine will be stored in x2 through x4
 - Any additional arguments will be pushed onto the stack
+- The return value will be stored in x1
 - The return address will be the last thing pushed onto the stack
 - The return address will be deallocated by the caller
 - x1 through x4 are caller-saved
