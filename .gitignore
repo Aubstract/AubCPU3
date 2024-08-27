@@ -2,10 +2,10 @@
 # Source Code Stuff
 #=======================================================
 src/emulator/log/log_files/*
-src/assembler/bin_files/*
-
-# Just to keep the log_files directory itself:
 !src/emulator/log/log_files/.gitkeep
+
+src/assembler/bin/*
+!src/assembler/bin/.gitkeep
 
 #=======================================================
 # Python is below

@@ -107,6 +107,7 @@ def main():
     parser.add_argument("-schem", "--schematic", action="store_true", help="output a schematic file")
     parser.add_argument("-odir", "--outputDirPath", help="Path to the output directory")
     args = parser.parse_args()
+    args.outputDirPath = args.outputDirPath.replace('"', '')
 
     dicts.src_file_path = get_file_path()
 
@@ -124,7 +125,7 @@ def main():
 
     # Write to binary file
     if args.binary:
-        write_bin_file(args.outputDirPath + file_name, program)
+        write_bin_file(args.outputDirPath + "\\" + file_name, program)
     elif args.schematic:
         write_schem_file(args.outputDirPath, file_name, program)
 
