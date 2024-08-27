@@ -109,15 +109,18 @@ a pipeline it sped up the clock speed significantly.
 **Here are some renders of the AubCPU3 in Minecraft (WIP):**
 
 **Legend:**
-- Orange - ALU
-- Yellow - Registers
-- Lime green - Main memory
-- Pinkish/Magenta - Program memory
-- Red - Program counter
-- Dark gray - Control logic
-- Light blue - Data bus
-- Dark blue - Address bus
-- Purple - I/O display
+
+| **Color**                                       | **Component**   |
+|-------------------------------------------------|-----------------|
+| <span style="color:orange">Orange</span>        | ALU             |
+| <span style="color:yellow">Yellow</span>        | Registers       |
+| <span style="color:lime">Lime Green</span>      | Main memory     |
+| <span style="color:magenta">Magenta</span>      | Program memory  |
+| <span style="color:red">Red</span>              | Program counter |
+| <span style="color:gray">Dark gray</span>       | Control logic   |
+| <span style="color:lightblue">Light blue</span> | Data bus        |
+| <span style="color:blue">Dark blue</span>       | Address bus     |
+| <span style="color:purple">Purple</span>        | I/O display     |
 
 ![render1](img/area_render_31.png)
 ![render2](img/area_render_32.png)
