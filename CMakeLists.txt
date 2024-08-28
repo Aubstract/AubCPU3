@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.28)
-project(SoftCPU2)
+project(AubCPU3)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(SoftCPU2
+add_executable(Emulator
         src/emulator/main.cpp
         src/emulator/CPU/RegisterFile.hpp
         src/emulator/CPU/RegisterFile.cpp
