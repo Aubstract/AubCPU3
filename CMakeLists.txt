@@ -13,11 +13,10 @@ add_executable(Emulator
         src/emulator/CPU/CPU.hpp
         src/emulator/CPU/CPU.cpp
         src/emulator/CPU/Memory.hpp
-        src/emulator/IO_Devices/IODevice.hpp
         src/emulator/IO_Devices/AddrSpaceManager.hpp
         src/emulator/IO_Devices/AddrSpaceManager.cpp
         src/emulator/log/log.hpp
         src/emulator/log/log.cpp
-        src/emulator/IO_Devices/FancyConsole.hpp
-        src/emulator/IO_Devices/FancyConsole.cpp
+        src/emulator/IO_Devices/Console.hpp
+        src/emulator/IO_Devices/Console.cpp
 )

@@ -15,15 +15,14 @@ uint8_t AddrSpaceManager::Read(size_t addr)
     {
         if (addr == CONSOLE_IN_ADDR)
         {
-            // TODO: Find a better way to deal with "internal" addresses for each device
-            return console.Read(2); // Address of console read register (basically std::cin)
+            return console.GetInput();
         }
         else
         {
             throw std::out_of_range("Invalid read address in AddrSpaceManager::Read()");
         }
     }
-    return data_mem.Read(addr - IO_ADDR_SPACE_SIZE);
+    return main_mem.Read(addr - IO_ADDR_SPACE_SIZE);
 }
 
 void AddrSpaceManager::Write(size_t addr, uint8_t data)
@@ -33,11 +32,11 @@ void AddrSpaceManager::Write(size_t addr, uint8_t data)
     {
         if (addr == CONSOLE_OPCODE_ADDR)
         {
-            console.Write(1, data);
+            console.SetMode(static_cast<ConsoleMode>(data));
         }
         else if (addr == CONSOLE_OUT_ADDR)
         {
-            console.Write(0, data);
+            console.Output(data);
         }
         else
         {
@@ -46,12 +45,11 @@ void AddrSpaceManager::Write(size_t addr, uint8_t data)
     }
     else
     {
-        data_mem.Write(addr - IO_ADDR_SPACE_SIZE, data);
+        main_mem.Write(addr - IO_ADDR_SPACE_SIZE, data);
     }
 }
 
 void AddrSpaceManager::ClearMem()
 {
-    console.Clear();
-    data_mem.Clear();
+    main_mem.Clear();
 }

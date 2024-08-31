@@ -5,14 +5,13 @@
 #ifndef SOFTCPU2_FANCYCONSOLE_HPP
 #define SOFTCPU2_FANCYCONSOLE_HPP
 
-#include "IODevice.hpp"
+#include <cstdint>
 #include <iostream>
 
 // Defines the possible modes for the device to be in
-enum ConsoleOpcode
+enum ConsoleMode
 {
     UINT = 0,
-    INT,
     CHAR
 };
 
@@ -22,19 +21,18 @@ enum ConsoleOpcode
 //
 // It has a few modes, which will determine how the input data is interpreted. Either as an unsigned integer,
 // a signed integer, or an ASCII character
-class FancyConsole : public IODevice<1, 2>
+class Console //: public IODevice<1, 2>
 {
 private:
-    ConsoleOpcode op; // Current device mode
-    std::ostream& os; // Output stream (usually std::cout)
-    std::istream& is; // Input stream (usually std::cin)
-    void ReadActive(size_t addr) override;
-    void WriteActive(size_t addr) override;
+    ConsoleMode mode = UINT; // Current device mode
+    std::ostream& ostrm; // Output stream (usually std::cout)
+    std::istream& istrm; // Input stream (usually std::cin)
 public:
-    FancyConsole(std::ostream& console_out, std::istream& console_in) : op(UINT),
-                                                                        os(console_out),
-                                                                        is(console_in) {};
+    Console(std::ostream& console_out, std::istream& console_in) : ostrm(console_out),
+                                                                   istrm(console_in) {};
+    uint8_t GetInput();
+    void Output(uint8_t data);
+    void SetMode(ConsoleMode new_mode);
 };
-
 
 #endif //SOFTCPU2_FANCYCONSOLE_HPP
