@@ -1,9 +1,9 @@
 // Created by Aubrey on 7/2/2024
 // Console Utilities for Standard Library
 
-console_out_addr: 0
-console_opcode_addr: 1
-console_in_addr: 2
+console_opcode_addr: 2
+console_out_addr: 3
+console_in_addr: 8
 
 console_uint_mode_opcode: 0
 console_int_mode_opcode: 1

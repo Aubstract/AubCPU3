@@ -14,7 +14,7 @@ CPU::CPU(std::ofstream& log_file,
          std::ostream& console_out,
          std::istream& console_in)
          : log(log_file),
-           io_mem(console_out, console_in)
+           mem_io(console_out, console_in)
 {}
 
 uint16_t CPU::Fetch(uint8_t PC)
@@ -279,7 +279,7 @@ void CPU::DecodeAndExecute(uint16_t instr)
             decode_pattern_b(args, instr);
             // No execute
             // Write back
-            reg_file.Write(args.at(0), io_mem.Read(reg_file.Read(args.at(1))));
+            reg_file.Write(args.at(0), mem_io.Read(reg_file.Read(args.at(1))));
             // Don't update flags
             // Increment PC
             reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
@@ -301,7 +301,7 @@ void CPU::DecodeAndExecute(uint16_t instr)
             decode_pattern_c(args, instr);
             // No execute
             // Write back
-            io_mem.Write(reg_file.Read(args.at(1)), reg_file.Read(args.at(0)));
+            mem_io.Write(reg_file.Read(args.at(1)), reg_file.Read(args.at(0)));
             // Don't update flags
             // Increment PC
             reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
@@ -392,7 +392,7 @@ void CPU::Step()
 void CPU::ResetMemory()
 {
     reg_file.Clear();
-    io_mem.ClearMem();
+    mem_io.ClearMem();
     prog_mem.Clear();
 }
 

@@ -12,7 +12,6 @@ int signed_byte_to_int(uint8_t num)
 
     if (num & SIGN_BIT_MASK)
     {
-        // -(256 - num)
         return_num = ((UINT8_MAX + 1) - int(num)) * -1;
     }
 
@@ -21,12 +20,14 @@ int signed_byte_to_int(uint8_t num)
 
 void FancyConsole::WriteActive(size_t addr)
 {
+    // Writing to opcode register
     if (addr == 1)
     {
         this->op = static_cast<ConsoleOpcode>(output_mem.Read(addr));
         return;
     }
 
+    // Outputting to console
     switch (this->op)
     {
         case UINT:

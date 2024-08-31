@@ -11,7 +11,7 @@
 
 #include "ALU.hpp"
 #include "Memory.hpp"
-#include "../IO_Devices/IOManager.hpp"
+#include "../IO_Devices/AddrSpaceManager.hpp"
 #include "RegisterFile.hpp"
 #include "Opcode.hpp"
 #include <cassert>
@@ -30,7 +30,7 @@ class CPU
 private:
     std::ofstream& log;
     RegisterFile reg_file;
-    IOManager io_mem;
+    AddrSpaceManager mem_io;
     Memory<uint16_t, PROG_MEM_SIZE> prog_mem;
 
     uint64_t cycles = 0;
