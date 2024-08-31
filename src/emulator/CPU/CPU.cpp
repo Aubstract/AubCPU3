@@ -10,10 +10,16 @@ inline constexpr uint16_t ARG_B_BITMASK = 0x0F00;
 inline constexpr uint16_t UPPER_BYTE_BITMASK = 0xFF00;
 
 // Constructor just initializes the CPU class's members
-CPU::CPU(std::ofstream& log_file,
+CPU::CPU(
+#ifndef NDEBUG
+         std::ofstream& log_file,
+#endif
          std::ostream& console_out,
          std::istream& console_in)
-         : log(log_file),
+         :
+#ifndef NDEBUG
+           log(log_file),
+#endif
            mem_io(console_out, console_in)
 {}
 
@@ -349,6 +355,12 @@ void CPU::Run(int64_t num_cycles)
     }
 
     halt = false;
+
+#ifndef NDEBUG
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
+    this->log << std::ctime(&now_time_t) << "\n";
+#endif
 
     if (num_cycles < 0)
     {

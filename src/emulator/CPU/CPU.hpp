@@ -15,6 +15,7 @@
 #include "RegisterFile.hpp"
 #include "Opcode.hpp"
 #include <cassert>
+#include <chrono>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -28,7 +29,9 @@ constexpr size_t PROG_MEM_SIZE = 256;
 class CPU
 {
 private:
+#ifndef NDEBUG
     std::ofstream& log;
+#endif
     RegisterFile reg_file;
     AddrSpaceManager mem_io;
     Memory<uint16_t, PROG_MEM_SIZE> prog_mem;
@@ -40,7 +43,10 @@ private:
     void DecodeAndExecute(uint16_t instr);
 
 public:
-    CPU(std::ofstream& log_file,
+    CPU(
+#ifndef NDEBUG
+        std::ofstream& log_file,
+#endif
         std::ostream& console_out,
         std::istream& console_in);
     void Run(int64_t num_cycles);
