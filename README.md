@@ -4,7 +4,7 @@
 The CPU architecture started as a design for a Minecraft CPU, but after my first two Minecraft CPU projects failed, 
 I was discouraged and shelved the idea. I later decided to revive the project and to implement it as an emulator instead. 
 I discovered that it is much easier to write an ISA emulator than it is to build a CPU in Minecraft, and so I made quick 
-progress. Partway through writing the emulator I realized I needed to start on the assmebler. Luckily I could borrow code 
+progress. Partway through writing the emulator I realized I needed to start on the assembler. Luckily I could borrow code 
 from an earlier project, and I got a barebones assembler working in under a day. Once I had finished the emulator and the 
 assembler I had the confidence to attempt it in Minecraft.
 
@@ -17,7 +17,7 @@ finish the I/O devices.
 ### General architecture:
 - Harvard architecture (instructions are stored in a separate memory space from data)
 - Load-store architecture
-- 16 registers (x0 thrpugh x15)
+- 16 registers (x0 through x15)
     - x0 is hardwired to zero
     - x1 is the return value register
     - x2 through x4 are argument registers for calling subroutines
