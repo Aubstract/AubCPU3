@@ -125,15 +125,10 @@ void CPU::DecodeAndExecute(uint16_t instr)
             {
                 reg_file.Write(PROG_CNTR_ADDR, args.at(0));
             }
-            else
-            {
-                // Increment PC
-                reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
-            }
             // No write back apart from updating the PC during execute phase
             // Don't update flags
-            // TODO: Change this to increment PC in order to match behavior of Minecraft CPU
-            // Don't increment PC again
+            // Increment PC
+            reg_file.Write(PROG_CNTR_ADDR, reg_file.Read(PROG_CNTR_ADDR) + 1);
             break;
 
         case CMP:
@@ -373,11 +368,8 @@ void CPU::Run(int64_t num_cycles)
 
 void CPU::Step()
 {
-    uint16_t instruction = Fetch(reg_file.Read(PROG_CNTR_ADDR));
-    DecodeAndExecute(instruction);
-    cycles++;
 #ifndef NDEBUG
-    if ((cycles - 1) % 50 == 0)
+    if ((cycles) % 50 == 0)
     {
         if (cycles != 0)
         {
@@ -387,6 +379,11 @@ void CPU::Step()
     }
     format_log(log);
     log << int(cycles) << " ";
+#endif
+    uint16_t instruction = Fetch(reg_file.Read(PROG_CNTR_ADDR));
+    DecodeAndExecute(instruction);
+    cycles++;
+#ifndef NDEBUG
     reg_file.Print(log);
     log << std::endl;
 #endif

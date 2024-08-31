@@ -114,7 +114,10 @@ def construct_labels(program: list[object]):
     for line_object in program:
         if ':' in line_object.line:
             if line_object.line.endswith(':'):
-                dicts.jump_labels[line_object.line[:-1]] = str(line_index)
+                jump_addr = line_index - 1
+                if jump_addr == -1:
+                    jump_addr = 255
+                dicts.jump_labels[line_object.line[:-1]] = str(jump_addr)
                 line_index -= 1
             else:
                 err.check_expression(line_object)
