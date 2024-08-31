@@ -5,9 +5,9 @@ link "library/console.txt"
 
 entry:
     dec stack_ptr_reg                           // make room on stack
-    ldi x5, end_prog                      // load return addr
+    ldi x5, end_prog                            // load return addr
     sto x5, stack_ptr_reg                       // push return addr
-    ldi pc_reg, main                      // jump to main
+    ldi pc_reg, main                            // jump to main
     end_prog:
         inc stack_ptr_reg                       // deallocate return addr
         hlt                                     // end program
@@ -25,31 +25,31 @@ main:
 
     // print first term
     dec stack_ptr_reg                           // make room on stack
-    ldi arg_a_reg, ret_print_first_term   // load return addr
+    ldi arg_a_reg, ret_print_first_term         // load return addr
     sto arg_a_reg, stack_ptr_reg                // push return addr
     cpr arg_a_reg, x5                           // copy first term to arg_a
     ldi arg_b_reg, console_uint_mode_opcode     // load console mode into arg_b
-    ldi pc_reg, print                      // call print subroutine
+    ldi pc_reg, print                           // call print subroutine
     ret_print_first_term:
         inc stack_ptr_reg                       // deallocate return addr
 
     // Print space character
     dec stack_ptr_reg                           // make room on stack
-    ldi arg_a_reg, ret_first_space        // load return addr
+    ldi arg_a_reg, ret_first_space              // load return addr
     sto arg_a_reg, stack_ptr_reg                // push return addr
     ldi arg_a_reg, ascii_space                  // copy term to arg_a
     ldi arg_b_reg, console_char_mode_opcode     // load console mode into arg_b
-    ldi pc_reg, print                    // call print subroutine
+    ldi pc_reg, print                           // call print subroutine
     ret_first_space:
         inc stack_ptr_reg                       // deallocate return addr
 
     // print second term
     dec stack_ptr_reg                           // make room on stack
-    ldi arg_a_reg, ret_print_sec_term     // load return addr
+    ldi arg_a_reg, ret_print_sec_term           // load return addr
     sto arg_a_reg, stack_ptr_reg                // push return addr
     cpr arg_a_reg, x6                           // copy second term to arg_a
     ldi arg_b_reg, console_uint_mode_opcode     // load console mode into arg_b
-    ldi pc_reg, print                     // call print subroutine
+    ldi pc_reg, print                           // call print subroutine
     ret_print_sec_term:
         inc stack_ptr_reg                       // deallocate return addr
 
@@ -66,26 +66,26 @@ main:
 
         // Print fibonacci term
         dec stack_ptr_reg                       // make room on stack
-        ldi arg_a_reg, ret_loop_print     // load return addr
+        ldi arg_a_reg, ret_loop_print           // load return addr
         sto arg_a_reg, stack_ptr_reg            // push return addr
         cpr arg_a_reg, x6                       // copy term to arg_a
         ldi arg_b_reg, console_uint_mode_opcode // load console mode into arg_b
-        ldi pc_reg, print                 // call print subroutine
+        ldi pc_reg, print                       // call print subroutine
         ret_loop_print:
             inc stack_ptr_reg                   // deallocate return addr
 
         // Print space character
         dec stack_ptr_reg                       // make room on stack
-        ldi arg_a_reg, ret_space_print    // load return addr
+        ldi arg_a_reg, ret_space_print          // load return addr
         sto arg_a_reg, stack_ptr_reg            // push return addr
         ldi arg_a_reg, ascii_space              // copy term to arg_a
         ldi arg_b_reg, console_char_mode_opcode // load console mode into arg_b
-        ldi pc_reg, print                 // call print subroutine
+        ldi pc_reg, print                       // call print subroutine
         ret_space_print:
             inc stack_ptr_reg                   // deallocate return addr
 
         // Unconditional loop
-        ldi pc_reg, fib_loop              // GOTO fib_loop
+        ldi pc_reg, fib_loop                    // GOTO fib_loop
 
     exit_loop:
         lod pc_reg, stack_ptr_reg               // return to caller

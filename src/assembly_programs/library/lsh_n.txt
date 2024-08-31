@@ -17,7 +17,7 @@ lsh_n:
     // if n_shift != 0, then enter loop, else early return
     cmp x0, arg_b_reg                           // compare n_shift to 0
     jin lsh_loop                                // if not equal, jump to lsh_loop
-    ldi pc_reg (exit_lsh_loop 1 -)              // else jump to exit_lsh_loop
+    ldi pc_reg exit_lsh_loop                    // else jump to exit_lsh_loop
 
     lsh_loop:
         dec arg_b_reg                           // decrement counter

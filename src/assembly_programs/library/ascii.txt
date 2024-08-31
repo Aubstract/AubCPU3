@@ -1,7 +1,8 @@
 // Created by Aubrey on 7/8/2024
 // ASCII Definitions for the Standard Library
 
-ascii_backspace: 8
+clear_screen: 18
+
 ascii_newline: 10
 ascii_space: 32
 

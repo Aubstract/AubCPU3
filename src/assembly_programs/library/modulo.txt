@@ -13,10 +13,10 @@ modulo:
     // num_a % num_b
     //
     // Definitions:
-    sign_bit_flag: 8                // 00001000
+    sign_bit_flag: 8                    // 00001000
 
-    ldi return_reg, 0               // Default ret val is 0
-    ldi arg_c_reg, sign_bit_flag    // load flag bitmask into arg_r_reg
+    ldi return_reg, 0                   // Default ret val is 0
+    ldi arg_c_reg, sign_bit_flag        // load flag bitmask into arg_r_reg
 
     // While num_a > num_b subtract num_b from num_a
     modulo_loop:
@@ -24,7 +24,7 @@ modulo:
         and flag_reg, arg_c_reg         // test for sign bit flag
         jin modulo_return               // if num_a < num_b GOTO modulo_return
         sub arg_a_reg, arg_b_reg        // else num_a -= num_b
-        ldi pc_reg, (modulo_loop 1 -)   // GOTO modulo_loop
+        ldi pc_reg, modulo_loop         // GOTO modulo_loop
 
     modulo_return:
         cpr return_reg, arg_a_reg       // copy num_a to return_reg

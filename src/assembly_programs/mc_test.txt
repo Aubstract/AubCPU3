@@ -3,7 +3,7 @@
 start:
 ldi x5, 3
 add x0, x5
-jin (end 1 -)
+jin end
 ldi pc_reg, 255
 
 end:

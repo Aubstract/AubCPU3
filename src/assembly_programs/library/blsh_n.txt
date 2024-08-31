@@ -21,7 +21,7 @@ blsh_n:
     // if n_shift != 0, then enter loop, else early return
     cmp x0, arg_b_reg                           // compare n_shift to 0
     jin blsh_loop                               // if not equal, jump to blsh_loop
-    ldi pc_reg (blsh_n_exit_loop 1 -)           // else jump to exit_blsh_loop
+    ldi pc_reg blsh_n_exit_loop                 // else jump to exit_blsh_loop
 
     blsh_n_loop:
         dec arg_b_reg                           // decrement counter
@@ -44,4 +44,4 @@ blsh_n:
 
     blsh_n_shift_in:
         inc arg_a_reg                           // same thing as shift in during lsh
-        ldi pc_reg, (blsh_n_ret_shift_in 1 -)   // jump back into the loop
+        ldi pc_reg, blsh_n_ret_shift_in         // jump back into the loop

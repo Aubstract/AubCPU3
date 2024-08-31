@@ -28,25 +28,25 @@ print_word:
     cpr x5, arg_a_reg                           // x5 = word_ptr
     cpr x6, arg_b_reg                           // x6 = word_len
     ldi x7, 0                                   // Initialize counter
-    ldi x8, (ret_print_char 1 -)                // Load inner return addr (saves ops to load it here)
+    ldi x8, ret_print_char                      // Load inner return addr (saves ops to load it here)
 
     print_loop:
         cmp x7, x6                              // compare counter to word_len
         jin continue_print_loop                 // if not equal, continue loop
-        ldi pc_reg, (exit_print_loop 1 -)       // else exit the loop
+        ldi pc_reg, exit_print_loop             // else exit the loop
 
         continue_print_loop:
         lod arg_a_reg, x5                       // load char of word into arg_a
         ldi arg_b_reg, console_char_mode_opcode // load console mode into arg_b
         dec stack_ptr_reg                       // make room on stack
         sto x8, stack_ptr_reg                   // push return addr
-        ldi pc_reg, (print 1 -)                 // jump to print subroutine
+        ldi pc_reg, print                       // jump to print subroutine
 
         ret_print_char:
         inc stack_ptr_reg                       // deallocate return addr
         inc x5                                  // increment word_ptr
         inc x7                                  // increment counter
-        ldi pc_reg, (print_loop 1 -)            // loop
+        ldi pc_reg, print_loop                  // loop
 
     exit_print_loop:
 
