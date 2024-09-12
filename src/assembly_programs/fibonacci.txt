@@ -53,16 +53,6 @@ main:
     ret_print_sec_term:
         inc stack_ptr_reg                       // deallocate return addr
 
-    // Print second newline character
-    dec stack_ptr_reg                           // make room on stack
-    ldi arg_a_reg, ret_second_newline             // load return addr
-    sto arg_a_reg, stack_ptr_reg                // push return addr
-    ldi arg_a_reg, ascii_newline                  // copy term to arg_a
-    ldi arg_b_reg, console_char_mode_opcode     // load console mode into arg_b
-    ldi pc_reg, print                           // call print subroutine
-    ret_second_newline:
-        inc stack_ptr_reg                       // deallocate return addr
-
     fib_loop:
         // Calculate fib term
         cpr x7, x5                              // copy first term to x7 (x7 acts as accumulator)
@@ -74,16 +64,6 @@ main:
         and flag_reg, x8                        // test carry flag using bitmask in x8
         jin exit_loop                           // exit loop if carry is set
 
-        // Print fibonacci term
-        dec stack_ptr_reg                       // make room on stack
-        ldi arg_a_reg, ret_loop_print           // load return addr
-        sto arg_a_reg, stack_ptr_reg            // push return addr
-        cpr arg_a_reg, x6                       // copy term to arg_a
-        ldi arg_b_reg, console_uint_mode_opcode // load console mode into arg_b
-        ldi pc_reg, print                       // call print subroutine
-        ret_loop_print:
-            inc stack_ptr_reg                   // deallocate return addr
-
         // Print newline character
         dec stack_ptr_reg                       // make room on stack
         ldi arg_a_reg, ret_newline_print          // load return addr
@@ -92,6 +72,16 @@ main:
         ldi arg_b_reg, console_char_mode_opcode // load console mode into arg_b
         ldi pc_reg, print                       // call print subroutine
         ret_newline_print:
+            inc stack_ptr_reg                   // deallocate return addr
+
+        // Print fibonacci term
+        dec stack_ptr_reg                       // make room on stack
+        ldi arg_a_reg, ret_loop_print           // load return addr
+        sto arg_a_reg, stack_ptr_reg            // push return addr
+        cpr arg_a_reg, x6                       // copy term to arg_a
+        ldi arg_b_reg, console_uint_mode_opcode // load console mode into arg_b
+        ldi pc_reg, print                       // call print subroutine
+        ret_loop_print:
             inc stack_ptr_reg                   // deallocate return addr
 
         // Unconditional loop

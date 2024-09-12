@@ -1,0 +1,73 @@
+// Created by Aubrey on 9/11/2024
+// Collatz Conjecture Program
+
+link "library/ascii.txt"
+link "library/console.txt"
+
+n: 42
+
+entry:
+    dec stack_ptr_reg                           // make room on stack
+    ldi x5, end_prog                            // load return addr
+    sto x5, stack_ptr_reg                       // push return addr
+    ldi pc_reg, main                            // jump to main
+    end_prog:
+        inc stack_ptr_reg                       // deallocate return addr
+        hlt                                     // end program
+
+main:
+
+    ldi x5, n                                   // Load n
+    ldi x6, 1                                   // Load compare value
+
+    collatz_loop:
+        // Print n
+        cpr arg_a_reg, x5                       // Move n into arg_a
+        ldi arg_b_reg, console_uint_mode_opcode // Load console mode
+        ldi x12, return_from_print_n            // Load return addr
+        dec stack_ptr_reg                       // Allocate space on stack
+        sto x12, stack_ptr_reg                  // Push return addr
+        ldi pc_reg, print                       // Call print
+        return_from_print_n:
+        inc stack_ptr_reg                       // Deallocate return addr
+
+        // Break loop if n==1
+        cmp x5, x6
+        jin dont_break
+        ldi pc_reg, end_of_main
+
+        dont_break:
+        // Print newline
+        ldi arg_a_reg, ascii_newline            // Move n into arg_a
+        ldi arg_b_reg, console_char_mode_opcode // Load console mode
+        ldi x12, return_from_print_newline      // Load return addr
+        dec stack_ptr_reg                       // Allocate space on stack
+        sto x12, stack_ptr_reg                  // Push return addr
+        ldi pc_reg, print                       // Call print
+        return_from_print_newline:
+        inc stack_ptr_reg                       // Deallocate return addr
+
+        // Collatz logic:
+
+        // Test if n is even or odd
+        cpr x7, x5
+        and x7, x6
+        jin collatz_odd
+
+        // Even logic
+        rsh x5
+        ldi pc_reg, end_of_loop
+
+        collatz_odd:
+        // Odd logic
+        cpr x7, x5
+        add x5, x7
+        add x5, x7
+        add x5, x6
+
+        end_of_loop:
+        // Jump to top of loop
+        ldi pc_reg, collatz_loop
+
+    end_of_main:
+    lod pc_reg, stack_ptr_reg                   // return to caller
