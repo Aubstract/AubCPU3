@@ -1,7 +1,6 @@
 // Created by Aubrey on 7/3/2024
-// FizzBuzz Program
+// Optimized FizzBuzz Program
 
-link "library/modulo.txt"
 link "library/ascii.txt"
 link "library/print_word.txt"
 
@@ -53,7 +52,9 @@ main:
     sto x7, x11                                 // Write 'z' to RAM at 0x17
 
     // Initialize variables used in loop
-    ldi x5, 1                                   // Initialize the counter
+    ldi x5, 1                                   // Initialize the loop counter
+    ldi x10, fizz_mod                           // Init the Fizz counter
+    ldi x11, buzz_mod                           // Init the Buzz counter
     ldi x6, max_count                           // Load max counter value
     ldi x7, zero_flag_bitmask                   // Load bitmask
 
@@ -61,24 +62,19 @@ main:
         // Reset the boolean
         ldi x8, 0                               // x8 is a bool meaning "don't print counter"
 
-        // FizzBuzz logic
-        
-        // FIZZ: if counter % fizz_mod == 0 then print "Fizz"
-        //
-        // do modulo
-        cpr arg_a_reg, x5                       // load counter into arg_a
-        ldi arg_b_reg, fizz_mod                 // load fizz_mod into arg_b
-        dec stack_ptr_reg                       // make room on stack for return addr
-        ldi x9, ret_fizz_mod                    // load return addr
-        sto x9, stack_ptr_reg                   // push return addr
-        ldi pc_reg, modulo                      // jump to modulo subroutine
-        ret_fizz_mod:
-        inc stack_ptr_reg                       // deallocate return addr
-        // if result != 0 skip to buzz
-        orr x0, return_reg                      // test return value
-        jin buzz                                // if result != 0 jump to buzz
-        // else if result == 0, print "Fizz"
-        ldi x8, 1                               // set bool to "true"
+        // FIZZ:
+        // compare counter to fizz_counter
+        cmp x5, x10
+
+        // if counter != fizz_counter GOTO buzz
+        jin buzz
+
+        // else they are equal
+        ldi x8, 1                               // set bool to "true" to prevent counter from printing
+        ldi x12, fizz_mod
+        add x10, x12                            // fizz_counter += fizz_mod
+
+        // Print "Fizz"
         dec stack_ptr_reg                       // make room on stack
         ldi x9, ret_print_fizz                  // load return addr
         sto x9, stack_ptr_reg                   // push return addr
@@ -87,24 +83,21 @@ main:
         ldi pc_reg, print_word                  // call print_word subroutine
         ret_print_fizz:
         inc stack_ptr_reg                       // deallocate return addr
-        
+
         buzz:
-        // BUZZ: if counter % buzz_mod == 0 then print "Buzz"
-        //
-        // do modulo
-        cpr arg_a_reg, x5                       // load counter into arg_a
-        ldi arg_b_reg, buzz_mod                 // load buzz_mod into arg_b
-        dec stack_ptr_reg                       // make room on stack for return addr
-        ldi x9, ret_buzz_mod                    // load return addr
-        sto x9, stack_ptr_reg                   // push return addr
-        ldi pc_reg, modulo                      // jump to modulo subroutine
-        ret_buzz_mod:
-        inc stack_ptr_reg                       // deallocate return addr
-        // if result != 0 skip to buzz
-        orr x0, return_reg                      // test return value
-        jin counter                             // if result != 0 jump to counter
-        // else if result == 0, print "Buzz"
-        ldi x8, 1                               // set bool to "true"
+        // BUZZ:
+        // compare counter to buzz_counter
+        cmp x5, x11
+
+        // if counter != buzz_counter GOTO counter
+        jin counter
+
+        // else they are equal
+        ldi x8, 1                               // set bool to "true" to prevent counter from printing
+        ldi x12, buzz_mod
+        add x11, x12                            // buzz_counter += buzz_mod
+
+        // Print "Buzz"
         dec stack_ptr_reg                       // make room on stack
         ldi x9, ret_print_buzz                  // load return addr
         sto x9, stack_ptr_reg                   // push return addr
@@ -113,7 +106,7 @@ main:
         ldi pc_reg, print_word                  // call print_word subroutine
         ret_print_buzz:
         inc stack_ptr_reg                       // deallocate return addr
-        
+
         counter:
         // COUNTER: else print counter
         orr x0, x8                              // test the bool
@@ -129,6 +122,13 @@ main:
 
         skip_counter:
 
+        // If (counter == max_count), exit loop
+        cmp x5, x6                              // compare counter to max_count
+        and flag_reg, x7                        // check the zero flag (equality check)
+        jin exit_fb_loop                        // if they are equal break the loop
+
+        // Else print a newline and then loop
+
         // Print newline character
         ldi arg_a_reg, ascii_newline            // load End of Line char into arg_a
         ldi arg_b_reg, console_char_mode_opcode // load console char opcode into arg_b
@@ -139,12 +139,6 @@ main:
         ret_print_eol:
         inc stack_ptr_reg                       // deallocate return addr
 
-        // If (counter == max_count), exit loop
-        cmp x5, x6                              // compare counter to max_count
-        and flag_reg, x7                        // check the zero flag (equality check)
-        jin exit_fb_loop                        // if they are equal break the loop
-
-        // Else print a newline and then loop
         inc x5                                  // increment counter
         ldi pc_reg, fb_loop                     // loop
 

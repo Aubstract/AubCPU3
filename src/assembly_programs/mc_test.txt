@@ -1,10 +1,34 @@
 // Test program for the Minecraft computer
 
-start:
-ldi x5, 3
-add x0, x5
-jin end
-ldi pc_reg, 255
+link "library/console.txt"
 
-end:
-hlt
+// Load arguments for print
+ldi arg_a_reg, 10
+ldi arg_b_reg, console_char_mode_opcode
+
+// Push return address
+dec stack_ptr_reg
+ldi x5, ret_from_print
+sto x5, stack_ptr_reg
+
+ldi pc_reg, print               // call print
+ret_from_print:
+inc stack_ptr_reg               // deallocate return addr
+
+
+// Load arguments for print
+ldi arg_a_reg, 4
+ldi arg_b_reg, console_uint_mode_opcode
+
+// Push return address
+dec stack_ptr_reg
+ldi x5, ret_from_sec_print
+sto x5, stack_ptr_reg
+
+ldi pc_reg, print               // call print
+ret_from_sec_print:
+inc stack_ptr_reg               // deallocate return addr
+
+
+
+hlt                             // end prog

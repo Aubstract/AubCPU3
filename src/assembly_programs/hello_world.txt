@@ -1,0 +1,74 @@
+// Created by Aubrey on 9/11/2024
+// Hello World Program
+
+// Hello World!
+
+link "library/ascii.txt"
+link "library/print_word.txt"
+
+hlo_wrld_ptr: 16
+hlo_wrld_len: 12
+
+entry:
+    dec stack_ptr_reg                           // make room on stack
+    ldi x5, end_prog                            // load return addr
+    sto x5, stack_ptr_reg                       // push return addr
+    ldi pc_reg, main                            // jump to main
+    end_prog:
+        inc stack_ptr_reg                       // deallocate return addr
+        hlt                                     // end program
+
+main:
+    // Load first batch of letters
+    ldi x5, ascii_H
+    ldi x6, ascii_e
+    ldi x7, ascii_l
+    ldi x8, ascii_o
+    ldi x9, ascii_space
+    ldi x10, ascii_W
+    ldi x11, ascii_r
+
+    ldi x12, hlo_wrld_ptr                       // Load ptr to start of word
+
+    sto x5, x12                                 // Store 'H'
+    inc x12
+    sto x6, x12                                 // Store 'e'
+    inc x12
+    sto x7, x12                                 // Store 'l'
+    inc x12
+    sto x7, x12                                 // Store 'l'
+    inc x12
+    sto x8, x12                                 // Store 'o'
+    inc x12
+    sto x9, x12                                 // Store ' '
+    inc x12
+    sto x10, x12                                // Store 'W'
+    inc x12
+    sto x8, x12                                 // Store 'o'
+    inc x12
+    sto x11, x12                                // Store 'r'
+    inc x12
+    sto x7, x12                                 // Store 'l'
+    inc x12
+
+    // Load second batch of letters
+    ldi x5, ascii_d
+    ldi x6, ascii_!
+
+    sto x5, x12                                 // Store 'd'
+    inc x12
+    sto x6, x12                                 // Store '!'
+    inc x12
+
+    // Print the words :)
+    ldi arg_a_reg, hlo_wrld_ptr                 // Load ptr into arg_a
+    ldi arg_b_reg, hlo_wrld_len                 // Load len into arg_b
+    ldi x5, return_from_print_hlo               // Load return addr
+    dec stack_ptr_reg                           // Allocate byte on stack
+    sto x5, stack_ptr_reg                       // Store return addr to stack
+    ldi pc_reg, print_word                      // Call print_word
+
+    return_from_print_hlo:
+    inc stack_ptr_reg                           // Deallocate return addr
+
+    lod pc_reg, stack_ptr_reg                   // Return to caller

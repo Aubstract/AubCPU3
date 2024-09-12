@@ -101,7 +101,8 @@ the same for the Minecraft CPU).
 
 Building a CPU in Minecraft is roughly equivalent to building a CPU from the transistor level up, or at least from the
 logic gate up. There are no "out of the box" mass-memory components or anything like that, it all has to be built from
-logic gates.
+logic gates. And unlike programs like Logisim, Minecraft has gate time and signal transmission time, which has
+huge implications for the timing of circuits.
 
 One thing I'm proud of is that the Minecraft CPU is pipelined. It only has 2 stages (fetch, execute) but by implementing
 a pipeline it sped up the clock speed significantly.

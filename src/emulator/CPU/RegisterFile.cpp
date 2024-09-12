@@ -21,10 +21,19 @@ void RegisterFile::Write(size_t addr, uint8_t data)
 void RegisterFile::Clear()
 {
     Memory::Clear();
+    // TODO: Why does this next line need to be here? Something is clearly wrong with the Debug build of this project.
+    //       If I run debug then reg[0] wasnt getting set to 0, it was random, and in the Fizzbuzz program it wont print
+    //       any characters to the terminal except '/n']
+    //       Wait but I just ran FizzBuzz and it worked???? wtfff Clion
+    this->registers.at(0) = 0;
 }
 
 void RegisterFile::UpdateFlags(uint16_t alu_out, uint8_t alu_in_a, uint8_t alu_in_b)
 {
+    // NOTE: A likely place point of deviation between the emulator and the Minecraft CPU is the flags after a bitwise
+    // logic operation. Add and Sub should act exactly the same, but for example the overflow flag is set during an AND
+    // operation in Minecraft due to the design of the ALU. So that's something to watch out for.
+
     this->ClearFlags();
 
     if (alu_out == 0)

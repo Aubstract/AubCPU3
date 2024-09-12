@@ -1,6 +1,7 @@
 // Created by Aubrey on 6/18/2024
 // Fibonacci Program for SoftCPU2
 
+link "library/ascii.txt"
 link "library/console.txt"
 
 entry:
@@ -13,7 +14,6 @@ entry:
         hlt                                     // end program
 
 carry_out_flag: 4
-ascii_space: 32
 
 main:
     // load bitmask for carry flag
@@ -33,14 +33,14 @@ main:
     ret_print_first_term:
         inc stack_ptr_reg                       // deallocate return addr
 
-    // Print space character
+    // Print newline character
     dec stack_ptr_reg                           // make room on stack
-    ldi arg_a_reg, ret_first_space              // load return addr
+    ldi arg_a_reg, ret_first_newline              // load return addr
     sto arg_a_reg, stack_ptr_reg                // push return addr
-    ldi arg_a_reg, ascii_space                  // copy term to arg_a
+    ldi arg_a_reg, ascii_newline                  // copy term to arg_a
     ldi arg_b_reg, console_char_mode_opcode     // load console mode into arg_b
     ldi pc_reg, print                           // call print subroutine
-    ret_first_space:
+    ret_first_newline:
         inc stack_ptr_reg                       // deallocate return addr
 
     // print second term
@@ -51,6 +51,16 @@ main:
     ldi arg_b_reg, console_uint_mode_opcode     // load console mode into arg_b
     ldi pc_reg, print                           // call print subroutine
     ret_print_sec_term:
+        inc stack_ptr_reg                       // deallocate return addr
+
+    // Print second newline character
+    dec stack_ptr_reg                           // make room on stack
+    ldi arg_a_reg, ret_second_newline             // load return addr
+    sto arg_a_reg, stack_ptr_reg                // push return addr
+    ldi arg_a_reg, ascii_newline                  // copy term to arg_a
+    ldi arg_b_reg, console_char_mode_opcode     // load console mode into arg_b
+    ldi pc_reg, print                           // call print subroutine
+    ret_second_newline:
         inc stack_ptr_reg                       // deallocate return addr
 
     fib_loop:
@@ -74,14 +84,14 @@ main:
         ret_loop_print:
             inc stack_ptr_reg                   // deallocate return addr
 
-        // Print space character
+        // Print newline character
         dec stack_ptr_reg                       // make room on stack
-        ldi arg_a_reg, ret_space_print          // load return addr
+        ldi arg_a_reg, ret_newline_print          // load return addr
         sto arg_a_reg, stack_ptr_reg            // push return addr
-        ldi arg_a_reg, ascii_space              // copy term to arg_a
+        ldi arg_a_reg, ascii_newline              // copy term to arg_a
         ldi arg_b_reg, console_char_mode_opcode // load console mode into arg_b
         ldi pc_reg, print                       // call print subroutine
-        ret_space_print:
+        ret_newline_print:
             inc stack_ptr_reg                   // deallocate return addr
 
         // Unconditional loop

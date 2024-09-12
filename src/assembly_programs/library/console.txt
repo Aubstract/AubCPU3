@@ -11,7 +11,7 @@ console_char_mode_opcode: 1
 print:
     // Arguments:
     // arg_a_reg = data
-    // arg_b_reg = console_mode_opcode (uint, int, char...)
+    // arg_b_reg = console_mode_opcode (uint, char...)
     //
     // Stack:
     // ret_addr <- stack_ptr_reg
@@ -29,7 +29,7 @@ print:
 
 input:
     // Arguments:
-    // arg_a_reg = console_mode_opcode (uint, int, char...)
+    // arg_a_reg = console_mode_opcode (uint, char...)
     //
     // Stack:
     // ret_addr <- stack_ptr_reg
