@@ -6,6 +6,7 @@
 #define SOFTCPU2_AddrSpaceManager_HPP
 
 #include "Console.hpp"
+#include "PixelDisplay.hpp"
 #include "../CPU/Memory.hpp"
 #include <cstdint>
 #include <iostream>
@@ -21,8 +22,9 @@ class AddrSpaceManager
 private:
     Memory<uint8_t, MEM_ADDR_SPACE_SIZE> main_mem;
     Console console;
+    PixelDisplay pixel_display;
 public:
-    AddrSpaceManager(std::ostream& out, std::istream& in) : console(out, in) {};
+    AddrSpaceManager(std::ostream& out, std::istream& in) : console(out, in), pixel_display(out) {};
     uint8_t Read(size_t addr);
     void Write(size_t addr, uint8_t data);
     void ClearMem();

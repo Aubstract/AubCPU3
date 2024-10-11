@@ -1,0 +1,9 @@
+// Created by Aubrey on 10/1/2024
+// Flag Definitions for the Standard Library
+
+zero_flag_bitmask: 1
+not_zero_flag_bitmask: 2
+carry_bit_flag_bitmask: 4
+sign_bit_flag_bitmask: 8
+overflow_flag_bitmask: 16
+signed_less_than_flag_bitmask: 32

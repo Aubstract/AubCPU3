@@ -1,34 +1,28 @@
 // Test program for the Minecraft computer
 
 link "library/console.txt"
+link "library/pixel_display.txt"
+link "library/ascii.txt"
 
-// Load arguments for print
-ldi arg_a_reg, 10
-ldi arg_b_reg, console_char_mode_opcode
+x: 5
+y: 3
 
-// Push return address
+// load arguments
+ldi arg_a_reg, x
+ldi arg_b_reg, y
+
+// push return addr
 dec stack_ptr_reg
-ldi x5, ret_from_print
+ldi x5, return_from_plot
 sto x5, stack_ptr_reg
 
-ldi pc_reg, print               // call print
-ret_from_print:
-inc stack_ptr_reg               // deallocate return addr
+// call plot
+ldi pc_reg, plot
 
+return_from_plot:
 
-// Load arguments for print
-ldi arg_a_reg, 4
-ldi arg_b_reg, console_uint_mode_opcode
+// deallocate return addr
+inc stack_ptr_reg
 
-// Push return address
-dec stack_ptr_reg
-ldi x5, ret_from_sec_print
-sto x5, stack_ptr_reg
-
-ldi pc_reg, print               // call print
-ret_from_sec_print:
-inc stack_ptr_reg               // deallocate return addr
-
-
-
-hlt                             // end prog
+// end program
+hlt

@@ -3,6 +3,7 @@
 #include <chrono>
 #include <fstream>
 #include <iostream>
+#include <process.h>
 #include <string>
 
 int main()
@@ -12,9 +13,6 @@ int main()
     std::ofstream log("../src/emulator/log/log_files/log.txt");
     assert(log);
 #endif
-
-    // TESTING STUFF
-    // std::ofstream console_out("../src/emulator/log/log_files/console_out.txt");
 
 #ifndef NDEBUG
     CPU cpu(log, std::cout, std::cin);
@@ -41,6 +39,9 @@ int main()
     auto end = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     std::cout << "\n\n Microseconds:\n" << duration.count() << std::endl;
+
+    // Hang at the end of the program
+    // system("pause");
 
     return 0;
 }

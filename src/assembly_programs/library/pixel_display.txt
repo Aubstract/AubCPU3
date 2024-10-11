@@ -1,0 +1,30 @@
+// Created by Aubrey on 9/30/2024
+// Pixel Display Utilities for Standard Library
+
+pixel_display_y_addr: 0
+pixel_display_x_addr: 1
+
+// Always write to x first.
+// When the y coord is updated, it is automatically plotted.
+
+plot:
+    // Notes:
+    // Plots a point at (x,y)
+    //
+    // Arguments:
+    // arg_a_reg = x
+    // arg_b_reg = y
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+
+    // Set X coord
+    ldi arg_c_reg, pixel_display_x_addr
+    sto arg_a_reg, arg_c_reg
+
+    // Set Y coord and plot (automatic)
+    ldi arg_c_reg, pixel_display_y_addr
+    sto arg_b_reg, arg_c_reg
+
+    // Return to caller
+    lod pc_reg, stack_ptr_reg

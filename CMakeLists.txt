@@ -19,4 +19,5 @@ add_executable(Emulator
         src/emulator/log/log.cpp
         src/emulator/IO_Devices/Console.hpp
         src/emulator/IO_Devices/Console.cpp
+        src/emulator/IO_Devices/PixelDisplay.hpp
 )

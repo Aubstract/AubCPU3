@@ -1,0 +1,109 @@
+// Created by Aubrey on 9/12/2024
+// Binary Search Tree
+
+link "library/flags.txt"
+link "library/memory.txt"
+link "library/console.txt"
+
+N1_val: 5
+
+entry:
+    dec stack_ptr_reg                           // make room on stack
+    ldi x5, end_prog                            // load return addr
+    sto x5, stack_ptr_reg                       // push return addr
+    ldi pc_reg, main                            // jump to main
+    end_prog:
+        inc stack_ptr_reg                       // deallocate return addr
+        hlt                                     // end program
+
+// Node:
+// Node* left
+// uint8_t value
+// Node* right
+
+left_offset: 0
+value_offset: 1
+right_offset: 2
+
+insert:
+    // Notes:
+    // Inserts a node into the binary search tree
+    //
+    // Arguments:
+    // arg_a_reg = value
+    // arg_b_reg = root_ptr
+    //
+    // Return Value:
+    // root_ptr
+    //
+    // Stack:
+    // ret_addr <- stack_ptr_reg
+
+    // if (node_ptr == null) then GOTO empty_tree
+    cmp arg_b_reg, x0
+    ldi x5, zero_flag_bitmask
+    and flag_reg, x5
+    jin empty_tree
+
+    // else if (node_ptr->value == value) then GOTO already_present
+    ldi x6, value_offset
+    add x6, stack_ptr_reg                       // x6 = &(node_ptr->value)
+    lod x6, x6                                  // x6 = node_ptr->value
+    cmp x6, arg_a_reg                           // (node_ptr->value == value) ?
+    and flag_reg, x5
+    jin already_present
+
+    // else if (node_ptr->value < value) then GOTO greater than
+    cmp arg_a_reg, x6
+    ldi x5, not_zero_flag_bitmask
+    and flag_reg, x5
+    jin greater_than
+
+    // else GOTO less than
+    ldi pc_reg, less_than
+
+    empty_tree:
+    // return new Node(value)
+    ldi return_reg, ram_start_addr              // "malloc()" here rly just returns ram_start_addr
+    ldi x5, 0
+    sto x5, return_reg                          // init root->left to null
+    ldi x6, (ram_start_addr right_offset +)
+    sto x5, x6                                  // init root->right to null
+    dec x6
+    sto arg_a_reg, x6                           // init root->value to value
+    lod pc_reg, stack_ptr_reg                   // early return
+
+    already_present:
+    cpr return_reg, arg_b_reg                   // return node_ptr
+    lod pc_reg, stack_ptr_reg                   // early return
+
+    greater_than:
+    dec stack_ptr_reg
+    sto arg_b_reg, stack_ptr_reg                // save root_ptr to stack
+
+    // call insert(node->right, value)
+
+
+    lod arg_b_reg, stack_ptr_reg
+    inc stack_ptr_reg                           // deallocate root_ptr
+
+
+    less_than:
+    hlt
+
+    cpr return_reg, arg_b_reg
+    lod pc_reg, stack_ptr_reg                   // Return to caller
+
+main:
+    ldi arg_a_reg, N1_val                       // load val
+    ldi arg_b_reg, 0                            // root_ptr = nullptr
+
+    dec stack_ptr_reg
+    ldi x5, return_from_insert
+    sto x5, stack_ptr_reg                       // push return addr
+
+    ldi pc_reg, insert                          // call insert
+
+    return_from_insert:
+    inc stack_ptr_reg
+    lod pc_reg, stack_ptr_reg                   // Return to caller

@@ -1,0 +1,5 @@
+// Created by Aubrey on 10/1/2024
+// Memory Definitions for the Standard Library
+
+ram_start_addr: 16
+ram_end_addr: 255

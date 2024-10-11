@@ -1,0 +1,13 @@
+// Created by Aubrey on 9/12/2024
+// Recursive Fibonacci
+
+entry:
+    dec stack_ptr_reg                           // make room on stack
+    ldi x5, end_prog                            // load return addr
+    sto x5, stack_ptr_reg                       // push return addr
+    ldi pc_reg, main                            // jump to main
+    end_prog:
+        inc stack_ptr_reg                       // deallocate return addr
+        hlt                                     // end program
+
+main:

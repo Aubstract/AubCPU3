@@ -4,6 +4,8 @@
 
 #include "AddrSpaceManager.hpp"
 
+constexpr size_t PIXEL_DISPLAY_Y_ADDR = 0;
+constexpr size_t PIXEL_DISPLAY_X_ADDR = 1;
 constexpr size_t CONSOLE_OPCODE_ADDR = 2;
 constexpr size_t CONSOLE_OUT_ADDR = 3;
 constexpr size_t CONSOLE_IN_ADDR = 8;
@@ -30,7 +32,15 @@ void AddrSpaceManager::Write(size_t addr, uint8_t data)
     // Addressing an IO device
     if (addr < IO_ADDR_SPACE_SIZE)
     {
-        if (addr == CONSOLE_OPCODE_ADDR)
+        if (addr == PIXEL_DISPLAY_Y_ADDR)
+        {
+            pixel_display.setYAndPlot(data);
+        }
+        else if (addr == PIXEL_DISPLAY_X_ADDR)
+        {
+            pixel_display.setX(data);
+        }
+        else if (addr == CONSOLE_OPCODE_ADDR)
         {
             console.SetMode(static_cast<ConsoleMode>(data));
         }

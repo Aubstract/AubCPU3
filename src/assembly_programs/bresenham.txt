@@ -1,0 +1,207 @@
+// Created by Aubrey on 9/30/24
+// Bresenham's Line Drawing Algorithm for AubCPU3
+
+link "library/flags.txt"
+link "library/pixel_display.txt"
+
+xa: 3
+ya: 5
+xb: 30
+yb: 10
+
+entry:
+    dec stack_ptr_reg                           // make room on stack
+    ldi x5, end_prog                            // load return addr
+    sto x5, stack_ptr_reg                       // push return addr
+    ldi pc_reg, main                            // jump to main
+    end_prog:
+        inc stack_ptr_reg                       // deallocate return addr
+        hlt                                     // end program
+
+plot_low:
+    // Notes:
+    // Plots a line with slope in range [1-, 1]
+    //
+    // Arguments:
+    // arg_a_reg = xa
+    // arg_b_reg = ya
+    // arg_c_reg = xb
+    //
+    // Stack:
+    // yb
+    // ret_addr <- stack_ptr_reg
+
+    plot_low_y1_stack_offset: 9
+
+    // Save all registers
+    dec stack_ptr_reg
+    sto x5, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x6, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x7, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x8, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x9, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x10, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x11, stack_ptr_reg
+    dec stack_ptr_reg
+    sto x12, stack_ptr_reg
+
+    // Load yb
+    ldi x5, plot_low_y1_stack_offset            // load offset into stack
+    add x5, stack_ptr_reg                       // x5 has addr of yb
+    lod x5, x5                                  // x5 now has yb
+
+    // reg map:
+    // arg_a_reg = xa
+    // arg_b_reg = ya
+    // arg_c_reg = xb
+    // x5        = yb
+
+    cpr x6, arg_c_reg
+    sub x6, arg_a_reg                           // x6 = xb - xa = dx
+
+    cpr x7, x5
+    sub x7, arg_b_reg                           // x7 = yb - ya = dy
+
+    ldi x8, 1                                   // x8 = 1 = yi
+
+    // if (dy < 0)
+    cmp x7, x0                                  // (dy < 0)
+    ldi x9, sign_bit_flag_bitmask
+    and flag_reg, x9                            // test less than flag
+    jin plot_low_dont_skip_redefine             // if (dy < 0) then redefine yi and dy
+    ldi pc_reg, plot_low_skip_redefine          // if !(dy < 0) then skip the redefinition of yi and dy
+    plot_low_dont_skip_redefine:
+
+    // inside if block
+    ldi x8, 255                                 // x8 = -1 = yi
+
+    ldi x9, 0
+    sub x9, x7
+    cpr x7, x9                                  // x7 = -dy
+
+    // endif
+    plot_low_skip_redefine:
+
+    // Calculate D = (2 * dy) - dx
+    cpr x9, x7                                  // x9 = dy
+    lsh x9                                      // x9 = 2 * dy
+    sub x9, x6                                  // x9 = (2 * dy) - dx = D
+
+    // Initialize y
+    cpr x10, arg_b_reg                          // x10 = ya = y
+
+    // Plot loop
+    plot_low_loop:
+        // Call plot function
+        // But first, save arg_registers
+        dec stack_ptr_reg
+        sto arg_a_reg, stack_ptr_reg
+        dec stack_ptr_reg
+        sto arg_b_reg, stack_ptr_reg
+        dec stack_ptr_reg
+        sto arg_c_reg, stack_ptr_reg
+
+        // Call plot
+        // arg_a_reg already has xa
+        cpr arg_b_reg, x10                      // arg_b = y
+
+        ldi x11, plot_low_return_from_plot      // load return addr
+        dec stack_ptr_reg                       // allocate byte on stack
+        sto x11, stack_ptr_reg                  // push return addr
+
+        ldi pc_reg, plot                        // call plot
+
+        plot_low_return_from_plot:
+        inc stack_ptr_reg                       // deallocate return addr
+
+        lod arg_c_reg, stack_ptr_reg
+        inc stack_ptr_reg
+        lod arg_b_reg, stack_ptr_reg
+        inc stack_ptr_reg
+        lod arg_a_reg, stack_ptr_reg
+        inc stack_ptr_reg
+
+        // Update y and D
+
+        // if (D > 0)
+        cmp x0, x9
+        ldi x11, signed_less_than_flag_bitmask
+        and flag_reg, x11
+        jin plot_low_greater
+        ldi pc_reg, plot_low_not_greater
+        plot_low_greater:
+            add x10, x8                         // y = y + yi
+            cpr x11, x7                         // x11 has copy of dy
+            sub x11, x6                         // x11 = dy - dx
+            lsh x11                             // x11 = 2 * (dy - dx)
+            add x9, x11                         // D = D + (2 * (dy - dx))
+        plot_low_not_greater:
+            cpr x11, x7                         // x11 has copy of dy
+            lsh x11                             // x11 = 2 * dy
+            add x9, x11                         // D = D + (2 * dy)
+        // endif
+
+        // Loop condition:
+        cmp arg_a_reg, arg_c_reg                // compare xa and xb
+        ldi x11, zero_flag_bitmask
+        and x11, flag_reg                       // x11 now holds (xa == xb)
+
+        // if (xa == xb) then break the loop
+        jin plot_low_loop_false
+
+        // else xa++ and loop
+        plot_low_loop_true:
+        inc arg_a_reg
+        ldi pc_reg, plot_low_loop
+
+        plot_low_loop_false:
+
+    // Return registers to original values
+    lod x12, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x11, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x10, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x9, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x8, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x7, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x6, stack_ptr_reg
+    inc stack_ptr_reg
+    lod x5, stack_ptr_reg
+    inc stack_ptr_reg
+
+    lod pc_reg, stack_ptr_reg                   // return to caller
+
+main:
+
+    // Load arguments
+    ldi arg_a_reg, xa
+    ldi arg_b_reg, ya
+    ldi arg_c_reg, xb
+    ldi x5, yb                                  // Last arg (yb) has to go on stack
+    dec stack_ptr_reg                           // Allocate byte on stack
+    sto x5, stack_ptr_reg                       // Push yb onto stack
+
+    // Push return addr
+    ldi x5, return_from_plot_low                // Load return addr
+    dec stack_ptr_reg                           // Allocate byte on stack
+    sto x5, stack_ptr_reg                       // Push return addr
+
+    // Call plot_low
+    ldi pc_reg, plot_low                        // Jump to plot_low
+
+    return_from_plot_low:
+    inc stack_ptr_reg                           // Deallocate return addr
+    inc stack_ptr_reg                           // Deallocate yb
+
+    lod pc_reg, stack_ptr_reg                   // return to caller
